@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -35,6 +35,7 @@
         .buttons {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
         }
         .buttons button {
             margin: 0 10px;
@@ -124,6 +125,35 @@
             vertical-align: middle;
             margin-right: 5px;
         }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .buttons button {
+                margin: 5px 0;
+            }
+            .search-bar {
+                width: 90%;
+            }
+            .movie {
+                width: 45%;
+            }
+        }
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .search-bar {
+                width: 100%;
+            }
+            .movie {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -131,12 +161,12 @@
         <div class="header">
             <h1 onclick="window.location.href='index.html'">PixelView</h1>
             <div class="buttons">
-    <button onclick="window.location.href='index.html'">Inicio</button>
-    <button onclick="window.open('https://forms.gle/pzoRyJaDzWeqk87E9', '_blank')">Sugerir Peliculas/Series</button>
-    <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
-<button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp </button>
-    <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contactanos</button>
-</div>
+                <button onclick="window.location.href='index.html'">Inicio</button>
+                <button onclick="window.open('https://forms.gle/pzoRyJaDzWeqk87E9', '_blank')">Sugerir Peliculas/Series</button>
+                <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
+                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp </button>
+                <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contactanos</button>
+            </div>
         </div>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar películas..." onkeydown="if (event.key === 'Enter') searchMovies()">
