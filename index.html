@@ -214,6 +214,10 @@
                <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contáctanos</button>
             </div>
          </div>
+         <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar películas..." onkeydown="if (event.key === 'Enter') searchMovies()">
+            <button type="button" onclick="searchMovies()">Buscar</button>
+         </div>
          <div class="category-buttons">
             <button onclick="filterByGeneralCategory('pelicula')">Películas</button>
             <button onclick="filterByGeneralCategory('serie')">Series</button>
@@ -224,10 +228,6 @@
             <button onclick="filterBySpecificCategory('comedia')">Comedia</button>
             <button onclick="filterBySpecificCategory('drama')">Drama</button>
             <button onclick="filterBySpecificCategory('terror')">Terror</button>
-         </div>
-         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar películas..." onkeydown="if (event.key === 'Enter') searchMovies()">
-            <button type="button" onclick="searchMovies()">Buscar</button>
          </div>
          <div class="movie-list" id="movieList">
             <!-- Las películas se agregarán aquí mediante JavaScript -->
