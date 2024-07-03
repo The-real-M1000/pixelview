@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8QBBRRB3R"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-H8QBBRRB3R');
+    </script>
     
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H8QBBRRB3R"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-H8QBBRRB3R');
-</script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelView</title>
@@ -87,6 +85,26 @@
             background-color: #f4c542;
             color: #121212;
             cursor: pointer;
+        }
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .category-buttons button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: 1px solid #f4c542;
+            border-radius: 5px;
+            background: none;
+            color: #f4c542;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .category-buttons button:hover {
+            background-color: #f4c542;
+            color: #121212;
         }
         .movie-list {
             display: flex;
@@ -166,6 +184,10 @@
                 width: 100%;
             }
         }
+        .category-buttons button.active-button {
+    background-color: #e0b532;
+    color: #121212;
+    }
     </style>
 </head>
 <body>
@@ -176,9 +198,19 @@
                 <button onclick="window.location.href='index.html'">Inicio</button>
                 <button onclick="window.open('https://forms.gle/pzoRyJaDzWeqk87E9', '_blank')">Sugerir Peliculas/Series</button>
                 <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
-                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp </button>
+                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
                 <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contactanos</button>
             </div>
+        </div>
+        <div class="category-buttons">
+            <button onclick="filterByGeneralCategory('pelicula')">Películas</button>
+            <button onclick="filterByGeneralCategory('serie')">Series</button>
+            <button onclick="filterBySpecificCategory('aventura')">Aventura</button>
+            <button onclick="filterBySpecificCategory('ciencia ficcion')">Ciencia Ficción</button>
+            <button onclick="filterBySpecificCategory('infantil')">Infantil</button>
+            <button onclick="filterBySpecificCategory('comedia')">Comedia</button>
+            <button onclick="filterBySpecificCategory('drama')">Drama</button>
+            <button onclick="filterBySpecificCategory('terror')">Terror</button>
         </div>
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="Buscar películas..." onkeydown="if (event.key === 'Enter') searchMovies()">
@@ -189,7 +221,7 @@
         </div>
     </div>
     <footer>
-        <h5>Copyright Pixelview 2024</h5>
+        <h4>Copyright PixelView 2023 - 2024</h4>
     </footer>
     <script>
         function removeAccents(str) {
@@ -197,92 +229,128 @@
         }
 
         const movies = [
+        {
+                title: "Elementos",
+                image: "https://palomaynacho-1f321.kxcdn.com/wp-content/uploads/2023/03/elementos_p_243_ster_f986d537.jpeg",
+                link: "https://drive.google.com/file/d/1-vGKKZ27GBeICeLrRguRZH1iqGCWOM-R/view?usp=drivesdk",
+                generalCategory: "pelicula",
+                specificCategory: "infantil"
+            },
             {
-    title: "Elementos",
-    image: "https://palomaynacho-1f321.kxcdn.com/wp-content/uploads/2023/03/elementos_p_243_ster_f986d537.jpeg",
-    link: "https://drive.google.com/file/d/1-vGKKZ27GBeICeLrRguRZH1iqGCWOM-R/view?usp=drivesdk"
-},
-{
-    title: "Moonfall",
-    image: "https://th.bing.com/th/id/OIP.toosp8FYRkdQb0rOcDZehgAAAA?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/file/d/11t1eoYrdMbf06lnnYECSDvFTiRCR6WGJ/view?usp=drive_link"
-},
-{
-    title: "The batman",
-    image: "https://th.bing.com/th/id/OIP.xmlpgQS10ZMkJMjii-3boQHaLE?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/file/d/1SVtQCvPtxZU5Urg2m1gOReYNMR2LHcHY/view?usp=drive_link"
-},
-{
-    title: "Kill bill: Volumen 1",
-    image: "https://i.pinimg.com/originals/2e/8a/79/2e8a797964ea1e55cdd065a337b69c48.jpg",
-    link: "https://drive.google.com/file/d/1HA-mnCtrFQstbW9XduJTpQkONtXR2DJF/view?usp=drive_link"
-},
-{
-    title: "Avatar 2: El sentido del agua",
+                title: "Moonfall",
+                image: "https://th.bing.com/th/id/OIP.toosp8FYRkdQb0rOcDZehgAAAA?rs=1&pid=ImgDetMain",
+                link: "https://drive.google.com/file/d/11t1eoYrdMbf06lnnYECSDvFTiRCR6WGJ/view?usp=drive_link",
+                generalCategory: "pelicula",
+                specificCategory: "ciencia ficcion"
+            },
+            {
+                title: "The Batman",
+                image: "https://th.bing.com/th/id/OIP.xmlpgQS10ZMkJMjii-3boQHaLE?rs=1&pid=ImgDetMain",
+                link: "https://drive.google.com/file/d/1SVtQCvPtxZU5Urg2m1gOReYNMR2LHcHY/view?usp=drive_link",
+                generalCategory: "pelicula",
+                specificCategory: "aventura"
+            },
+            {
+                title: "Kill Bill: Volumen 1",
+                image: "https://i.pinimg.com/originals/2e/8a/79/2e8a797964ea1e55cdd065a337b69c48.jpg",
+                link: "https://drive.google.com/file/d/1bSjT6vTm_CAcEbYF1L9CwYyMY5Bqqv3M/view?usp=drivesdk",
+                generalCategory: "pelicula",
+                specificCategory: "aventura"
+            },
+            {
+   title: "Avatar 2: El sentido del agua",
     image: "https://th.bing.com/th/id/R.ce2cc6121e6e5bb6c2375b0261f28d99?rik=XB2aOTP%2bBSxdXw&pid=ImgRaw&r=0",
-    link: "https://drive.google.com/file/d/1m8bXMd-siV3Hxm3EDlGsOnsbY7Zgmw5a/view?usp=drive_link"
+    link: "https://drive.google.com/file/d/1m8bXMd-siV3Hxm3EDlGsOnsbY7Zgmw5a/view?usp=drive_link",
+    generalCategory: "pelicula",
+                specificCategory: "ciencia ficcion"
 },
 {
     title: "Kung fu panda 4",
     image: "https://th.bing.com/th/id/OIP.MApNrXU2aY7kShfDa-CIhgHaLH?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/file/d/1iDbA4Btj4kNeSd8zpkOFrY8WNTjQmVlA/view?usp=sharing"
+    link: "https://drive.google.com/file/d/1iDbA4Btj4kNeSd8zpkOFrY8WNTjQmVlA/view?usp=sharing",
+                specificCategory: "infantil"
 },
 {
     title: "El pianista",
     image: "https://th.bing.com/th/id/OIP.dcGxlPG1kzzKEG4X94xVKAHaLH?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/file/d/1HYXLdG6EcrpCkavUBKPDLd_G8DvO748o/view?usp=drive_linkk"
+    link: "https://drive.google.com/file/d/1HYXLdG6EcrpCkavUBKPDLd_G8DvO748o/view?usp=drive_linkk",
+    generalCategory: "pelicula",
+                specificCategory: "drama"
 },
 {
     title: "Plan en familia",
     image: "https://th.bing.com/th/id/OIP.vMw5DKLuYVy_K5NjYUxuAQHaLH?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/file/d/1dmU5N3cYqSvQsF7ihpNPvFyZEiLBqCS7/view?usp=drive_link"
+    link: "https://drive.google.com/file/d/1dmU5N3cYqSvQsF7ihpNPvFyZEiLBqCS7/view?usp=drive_link",
+    generalCategory: "pelicula",
+                specificCategory: "aventura"
 },
 {
     title: "Spy x family",
     image: "https://th.bing.com/th/id/OIP._EW1hVgpjGlFTB_EgXd5oQAAAA?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/drive/folders/1cBDr9JF_dfM-e7wvlGcQ8aokK2FQvcH4?usp=sharing"
+    link: "https://drive.google.com/drive/folders/1cBDr9JF_dfM-e7wvlGcQ8aokK2FQvcH4?usp=sharing",
+    generalCategory: "serie",
+                specificCategory: "drama"
 },
 {
     title: "El niño y la garza",
     image: "https://th.bing.com/th/id/OIP.ZX6u9Y5xkvDONgwf-iAzbwHaK0?rs=1&pid=ImgDetMain",
-    link: "https://drive.google.com/file/d/1dYCRoAF2i0sAzAsatg1ieVnJTpLSjidK/view?usp=drive_link"
+    link: "https://drive.google.com/file/d/1dYCRoAF2i0sAzAsatg1ieVnJTpLSjidK/view?usp=drive_link",
+    generalCategory: "pelicula",
+                specificCategory: "aventura"
 },
 {
     title: "Matrix [SAGA]",
     image: "https://image.tmdb.org/t/p/original/pEoqbqtLc4CcwDUDqxmEDSWpWTZ.jpg",
-    link: "https://drive.google.com/drive/folders/13ased5riaOXP73Jp83u4w_dns5kfl2EQ"
+    link: "https://drive.google.com/drive/folders/13ased5riaOXP73Jp83u4w_dns5kfl2EQ",
+    generalCategory: "pelicula",
+                specificCategory: "ciencia ficcion"
 },
 {
     title: "¿Qué le pasó a lunes?",
     image: "https://image.tmdb.org/t/p/original/hdOYrMf6jRcQ43wJXyMgubyoSlk.jpg",
-    link: "https://drive.google.com/file/d/1lRlXrkRYR7v3bOdmn5fLsL2bcGyg2dGp/view?usp=drive_link"
-} 
+    link: "https://drive.google.com/file/d/1lRlXrkRYR7v3bOdmn5fLsL2bcGyg2dGp/view?usp=drive_link",
+    generalCategory: "pelicula",
+                specificCategory: "ciencia ficcion"
+}
         ];
 
-        const movieList = document.getElementById('movieList');
+        function displayMovies(filteredMovies) {
+            const movieList = document.getElementById("movieList");
+            movieList.innerHTML = "";
 
-        function displayMovies(movieArray) {
-            movieList.innerHTML = '';
-            movieArray.forEach(movie => {
-                const movieItem = document.createElement('div');
-                movieItem.classList.add('movie');
-                movieItem.innerHTML = `
-                    <a href="${movie.link}" target="_blank">
-                        <img src="${movie.image}" alt="${movie.title}">
-                    </a>
+            filteredMovies.forEach(movie => {
+                const movieDiv = document.createElement("div");
+                movieDiv.classList.add("movie");
+                movieDiv.innerHTML = `
+                    <img src="${movie.image}" alt="${movie.title}">
                     <h2>${movie.title}</h2>
                 `;
-                movieList.appendChild(movieItem);
+                movieDiv.addEventListener("click", () => {
+                    window.open(movie.link, "_blank");
+                });
+                movieList.appendChild(movieDiv);
             });
         }
 
-        function searchMovies() {
-            const searchInput = removeAccents(document.getElementById('searchInput').value.toLowerCase());
-            const filteredMovies = movies.filter(movie => removeAccents(movie.title.toLowerCase()).includes(searchInput));
+        function filterByGeneralCategory(category) {
+            const filteredMovies = movies.filter(movie => movie.generalCategory === category);
             displayMovies(filteredMovies);
         }
 
+        function filterBySpecificCategory(category) {
+            const filteredMovies = movies.filter(movie => removeAccents(movie.specificCategory.toLowerCase()) === removeAccents(category.toLowerCase()));
+            displayMovies(filteredMovies);
+        }
+
+        function searchMovies() {
+            const query = document.getElementById("searchInput").value.toLowerCase();
+            const filteredMovies = movies.filter(movie => removeAccents(movie.title.toLowerCase()).includes(removeAccents(query)));
+            displayMovies(filteredMovies);
+        }
+
+        // Mostrar todas las películas inicialmente
         displayMovies(movies);
     </script>
 </body>
 </html>
+
