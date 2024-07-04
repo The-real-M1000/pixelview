@@ -246,6 +246,12 @@
             background-color: #e0b532;
             color: #121212;
         }
+        .imdb-logo {
+    height: 1em; /* Establece la altura igual a la altura del texto */
+    vertical-align: middle; /* Alinea verticalmente la imagen con el texto */
+    margin-right: 5px; /* Añade un pequeño margen a la derecha de la imagen */
+}
+
     </style>
 </head>
 <body>
@@ -280,8 +286,9 @@
      </div>
  </div>
  <footer>
-     <h4>© 2024 PixelView. Todos los derechos reservados.</h4>
- </footer>
+    <h4>© 2024 PixelView. Todos los derechos reservados.</h4>
+    <h5><img class="imdb-logo" src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fwww.camelproductions.net%2Fwp-content%2Fuploads%2F2017%2F08%2FIMDb-logo-2017.png&f=1&nofb=1&ipt=bd6106ce5d59f1a477f79901633e20a64c2279222834054422f30dd5331622b4&ipo=images" alt="IMDb"> Todas nuestras calificaciones y sinopsis son sacadas de IMDb.</h5>
+</footer>
  <script>
      function removeAccents(str) {
          return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
