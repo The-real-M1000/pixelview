@@ -1,388 +1,507 @@
 <!DOCTYPE html>
 <html lang="es">
-   <head>
-      <!-- Google tag (gtag.js) -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8QBBRRB3R"></script>
-      <script>
-         window.dataLayer = window.dataLayer || [];
-         function gtag(){dataLayer.push(arguments);}
-         gtag('js', new Date());
-         gtag('config', 'G-H8QBBRRB3R');
-      </script>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <link rel="icon" href="favicon.ico">
-      <!-- Font from Google Fonts -->
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
-      <style>
-         body {
-         margin: 0;
-         font-family: 'Rubik', Arial, sans-serif;
-         background-color: #121212;
-         color: #ffffff;
-         min-height: 100vh;
-         display: flex;
-         flex-direction: column;
-         }
-         .container {
-         flex: 1;
-         max-width: 1200px;
-         margin: 0 auto;
-         padding: 20px;
-         }
-         .header {
-         display: flex;
-         justify-content: space-between;
-         align-items: center;
-         padding: 20px 0;
-         }
-         .header h1 {
-         margin: 0;
-         font-size: 2.5em;
-         color: #f4c542;
-         cursor: pointer;
-         font-family:'Pixelify Sans', Arial, sans-serif; /* Mantenemos Arial para el título PixelView */
-         }
-         .buttons {
-         display: flex;
-         align-items: center;
-         flex-wrap: wrap;
-         }
-         .buttons button {
-         margin: 0 10px;
-         padding: 8px 16px;
-         border: none;
-         border-radius: 5px;
-         cursor: pointer;
-         background-color: #f4c542;
-         color: #121212;
-         transition: background-color 0.3s ease;
-         font-family: 'Rubik', Arial, sans-serif;
-         }
-         .buttons button:hover {
-         background-color: #e0b532;
-         }
-         .search-bar {
-         width: 100%;
-         max-width: 600px;
-         margin: 20px auto;
-         display: flex;
-         justify-content: center;
-         border-radius: 20px;
-         overflow: hidden;
-         background-color: rgba(255, 255, 255, 0.1);
-         }
-         .search-bar input {
-         width: 80%;
-         padding: 10px;
-         border: none;
-         outline: none;
-         background: none;
-         color: #ffffff;
-         font-family: 'Rubik', Arial, sans-serif;
-         }
-         .search-bar button {
-         width: 20%;
-         padding: 10px;
-         border: none;
-         background-color: #f4c542;
-         color: #121212;
-         cursor: pointer;
-         font-family: 'Rubik', Arial, sans-serif;
-         }
-         .category-buttons {
-         display: flex;
-         justify-content: center;
-         flex-wrap: wrap;
-         margin: 20px 0;
-         }
-         .category-buttons button {
-         margin: 5px;
-         padding: 8px 16px;
-         border: 1px solid #f4c542;
-         border-radius: 5px;
-         background: none;
-         color: #f4c542;
-         cursor: pointer;
-         transition: background-color 0.3s ease, color 0.3s ease;
-         font-family: 'Rubik', Arial, sans-serif;
-         }
-         .category-buttons button:hover {
-         background-color: #f4c542;
-         color: #121212;
-         }
-         .movie-list {
-         display: flex;
-         flex-wrap: wrap;
-         justify-content: space-around;
-         gap: 20px;
-         margin-top: 20px;
-         }
-         .movie {
-         background-color: #1e1e1e;
-         border-radius: 12px;
-         overflow: hidden;
-         text-align: center;
-         width: 200px;
-         height: auto;
-         cursor: pointer;
-         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-         transition: transform 0.3s ease, box-shadow 0.3s ease;
-         }
-         .movie:hover {
-         transform: translateY(-5px);
-         box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-         }
-         .movie img {
-         width: 100%;
-         height: 250px;
-         object-fit: cover;
-         border-radius: 12px;
-         transition: transform 0.3s ease;
-         }
-         .movie:hover img {
-         transform: scale(1.05);
-         }
-         .movie h2 {
-         margin: 10px 0;
-         font-size: 1.2em;
-         padding: 10px;
-         font-family: 'Rubik', Arial, sans-serif;
-         }
-         footer {
-         background-color: #1e1e1e;
-         color: #ffffff;
-         text-align: center;
-         padding: 10px 0;
-         margin-top: auto;
-         font-family: 'Rubik', Arial, sans-serif;
-         }
-         footer img {
-         height: 20px;
-         vertical-align: middle;
-         margin-right: 5px;
-         }
-         @media (max-width: 768px) {
-         .header h1 {
-         font-size: 2em;
-         }
-         .buttons {
-         flex-direction: column;
-         align-items: flex-start;
-         }
-         .buttons button {
-         margin: 5px 0;
-         }
-         .search-bar {
-         width: 90%;
-         }
-         .movie {
-         width: 45%;
-         }
-         }
-         @media (max-width: 480px) {
-         .header h1 {
-         font-size: 1.5em;
-         }
-         .search-bar {
-         width: 100%;
-         }
-         .movie {
-         width: 100%;
-         }
-         }
-         .category-buttons button.active-button {
-         background-color: #e0b532;
-         color: #121212;
-         }
-      </style>
-   </head>
-   <body>
-      <div class="container">
-         <div class="header">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8QBBRRB3R"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-H8QBBRRB3R');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="favicon.ico">
+    <!-- Font from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Rubik', Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .container {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #f4c542;
+            cursor: pointer;
+            font-family: 'Pixelify Sans', Arial, sans-serif;
+        }
+        .buttons {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .buttons button {
+            margin: 0 10px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            background-color: #f4c542;
+            color: #121212;
+            transition: background-color 0.3s ease;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        .buttons button:hover {
+            background-color: #e0b532;
+        }
+        .search-bar {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            border-radius: 20px;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .search-bar input {
+            width: 80%;
+            padding: 10px;
+            border: none;
+            outline: none;
+            background: none;
+            color: #ffffff;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        .search-bar button {
+            width: 20%;
+            padding: 10px;
+            border: none;
+            background-color: #f4c542;
+            color: #121212;
+            cursor: pointer;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        .category-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .category-buttons button {
+            margin: 5px;
+            padding: 8px 16px;
+            border: 1px solid #f4c542;
+            border-radius: 5px;
+            background: none;
+            color: #f4c542;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        .category-buttons button:hover {
+            background-color: #f4c542;
+            color: #121212;
+        }
+        .movie-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .movie {
+            background-color: #1e1e1e;
+            border-radius: 12px;
+            overflow: hidden;
+            text-align: center;
+            width: 200px;
+            height: auto;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, width 0.3s ease;
+        }
+        .movie:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .movie img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.3s ease;
+        }
+        .movie:hover img {
+            transform: scale(1.05);
+        }
+        .movie h2 {
+            margin: 10px 0;
+            font-size: 1.2em;
+            padding: 10px;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        .movie-details {
+            background-color: #2c2c2c;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .movie-details h3 {
+            margin-top: 0;
+        }
+        .movie-details p {
+            margin: 10px 0;
+        }
+        .movie-details button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f4c542;
+            color: #121212;
+            cursor: pointer;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        .movie-info {
+            padding: 10px;
+            display: none;
+            transition: display 0.3s ease;
+        }
+        .movie-info p {
+            margin: 5px 0;
+        }
+        .movie-info button {
+            background-color: #f4c542;
+            color: white;
+            border: none;
+            padding: 10px;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 100%;
+        }
+        .movie-info button:hover {
+            background-color: #d9b142fe;
+        }
+        footer {
+            background-color: #1e1e1e;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+            font-family: 'Rubik', Arial, sans-serif;
+        }
+        footer img {
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            .buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .buttons button {
+                margin: 5px 0;
+            }
+            .search-bar {
+                width: 90%;
+            }
+            .movie {
+                width: 45%;
+            }
+        }
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 1.5em;
+            }
+            .search-bar {
+                width: 100%;
+            }
+            .movie {
+                width: 100%;
+            }
+        }
+        .category-buttons button.active-button {
+            background-color: #e0b532;
+            color: #121212;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
             <h1 onclick="window.location.href='index.html'">PixelView</h1>
             <div class="buttons">
-               <button onclick="window.location.href='index.html'">Inicio</button>
-               <button onclick="window.open('https://forms.gle/pzoRyJaDzWeqk87E9', '_blank')">Sugerir Películas/Series</button>
-               <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
-               <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
-               <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contáctanos</button>
+                <button onclick="window.location.href='index.html'">Inicio</button>
+                <button onclick="window.open('https://forms.gle/pzoRyJaDzWeqk87E9', '_blank')">Sugerir Películas/Series</button>
+                <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
+                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
+                <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contáctanos</button>
             </div>
-         </div>
-         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar películas..." onkeydown="if (event.key === 'Enter') searchMovies()">
-            <button type="button" onclick="searchMovies()">Buscar</button>
-         </div>
-         <div class="category-buttons">
-            <button onclick="filterByGeneralCategory('pelicula')">Películas</button>
-            <button onclick="filterByGeneralCategory('serie')">Series</button>
-            <button onclick="filterBySpecificCategory('accion')">Acción</button>
-            <button onclick="filterBySpecificCategory('aventura')">Aventura</button>
-            <button onclick="filterBySpecificCategory('ciencia ficcion')">Ciencia Ficción</button>
-            <button onclick="filterBySpecificCategory('infantil')">Infantil</button>
-            <button onclick="filterBySpecificCategory('comedia')">Comedia</button>
-            <button onclick="filterBySpecificCategory('drama')">Drama</button>
-            <button onclick="filterBySpecificCategory('terror')">Terror</button>
-         </div>
-         <div class="movie-list" id="movieList">
-            <!-- Las películas se agregarán aquí mediante JavaScript -->
-         </div>
-      </div>
-      <footer>
-         <h4>© 2024 PixelView. Todos los derechos reservados.</h4>
-      </footer>
-      <script>
-        function removeAccents(str) {
-            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        }
+        </div>
+        <div class="search-bar">
+         <input type="text" id="searchInput" placeholder="Buscar películas..." onkeydown="if (event.key === 'Enter') searchMovies()">
+         <button type="button" onclick="searchMovies()">Buscar</button>
+     </div>
+     <div class="category-buttons">
+         <button onclick="filterByGeneralCategory('pelicula')">Películas</button>
+         <button onclick="filterByGeneralCategory('serie')">Series</button>
+         <button onclick="filterBySpecificCategory('accion')">Acción</button>
+         <button onclick="filterBySpecificCategory('aventura')">Aventura</button>
+         <button onclick="filterBySpecificCategory('ciencia ficcion')">Ciencia Ficción</button>
+         <button onclick="filterBySpecificCategory('infantil')">Infantil</button>
+         <button onclick="filterBySpecificCategory('comedia')">Comedia</button>
+         <button onclick="filterBySpecificCategory('drama')">Drama</button>
+         <button onclick="filterBySpecificCategory('terror')">Terror</button>
+     </div>
+     <div class="movie-list" id="movieList">
+         <!-- Las películas se agregarán aquí mediante JavaScript -->
+     </div>
+ </div>
+ <footer>
+     <h4>© 2024 PixelView. Todos los derechos reservados.</h4>
+ </footer>
+ <script>
+     function removeAccents(str) {
+         return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+     }
 
-        const movies = [
-           {
-                title: "Mi amigo el robot",
-                image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcinepremiere.com.mx%2Fwp-content%2Fuploads%2F2024%2F01%2FMi-amigo-robot-poster-1.jpg&f=1&nofb=1&ipt=7262f813bda46d7c30e0b5d9eeb829273d9b5633b7feb03775e22fee6a774873&ipo=images",
-                link: "https://drive.google.com/file/d/13AOzjP2puEi2RY3hyvEkKhlNTCLSOUEd/view?usp=drive_link",
-                generalCategory: "pelicula",
-                specificCategory: "comedia"
-            },
-            {
-                title: "¿Y donde están las rubias?",
-                image: "https://media.themoviedb.org/t/p/w220_and_h330_face/47gMRj9kPvIqKO8y5K38WtZMmc4.jpg",
-                link: "https://drive.google.com/file/d/1RoYj67A5wmROQvqyQqIKns9rJR4RSYhM/view?usp=drivesdk",
-                generalCategory: "pelicula",
-                specificCategory: "comedia"
-            },
-            {
-                title: "Como robar un banco",
-                image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BNzk3MTE5YWUtYmVjMS00MjczLWI0MzYtMTAxZjRlNDY1OWU2XkEyXkFqcGdeQXVyMTM0NjY0MzU%40._V1_.jpg&f=1&nofb=1&ipt=c6a1772352347d978801f3c31485227b672daa0b5dc213aafa5d1989171fdaab&ipo=images",
-                link: "https://drive.google.com/file/d/1ckk_CJt8awPXg8qrUUQ7RoCvhcu-6IlM/view?usp=drive_link",
-                generalCategory: "pelicula",
-                specificCategory: "accion"
-            },
-        {
-                title: "Elementos",
-                image: "https://palomaynacho-1f321.kxcdn.com/wp-content/uploads/2023/03/elementos_p_243_ster_f986d537.jpeg",
-                link: "https://drive.google.com/file/d/1-vGKKZ27GBeICeLrRguRZH1iqGCWOM-R/view?usp=drivesdk",
-                generalCategory: "pelicula",
-                specificCategory: "infantil"
-            },
-            {
-                title: "Moonfall",
-                image: "https://th.bing.com/th/id/OIP.toosp8FYRkdQb0rOcDZehgAAAA?rs=1&pid=ImgDetMain",
-                link: "https://drive.google.com/file/d/11t1eoYrdMbf06lnnYECSDvFTiRCR6WGJ/view?usp=drive_link",
-                generalCategory: "pelicula",
-                specificCategory: "ciencia ficcion"
-            },
-            {
-                title: "The Batman",
-                image: "https://th.bing.com/th/id/OIP.xmlpgQS10ZMkJMjii-3boQHaLE?rs=1&pid=ImgDetMain",
-                link: "https://drive.google.com/file/d/1SVtQCvPtxZU5Urg2m1gOReYNMR2LHcHY/view?usp=drive_link",
-                generalCategory: "pelicula",
-                specificCategory: "aventura"
-            },
-            {
-                title: "Kill Bill: Volumen 1",
-                image: "https://i.pinimg.com/originals/2e/8a/79/2e8a797964ea1e55cdd065a337b69c48.jpg",
-                link: "https://drive.google.com/file/d/1bSjT6vTm_CAcEbYF1L9CwYyMY5Bqqv3M/view?usp=drivesdk",
-                generalCategory: "pelicula",
-                specificCategory: "aventura"
-            },
-            {
-   title: "Avatar 2: El sentido del agua",
+     const movies = [
+     {
+    title: "Mi amigo el robot",
+    image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcinepremiere.com.mx%2Fwp-content%2Fuploads%2F2024%2F01%2FMi-amigo-robot-poster-1.jpg&f=1&nofb=1&ipt=7262f813bda46d7c30e0b5d9eeb829273d9b5633b7feb03775e22fee6a774873&ipo=images",
+    link: "https://drive.google.com/file/d/13AOzjP2puEi2RY3hyvEkKhlNTCLSOUEd/view?usp=drive_link",
+    generalCategory: "pelicula",
+    specificCategory: "comedia",
+    rating: "7.5",
+    synopsis: "Basada en la popular novela gráfica de la escritora norteamericana Sara Varon, Robot DREAMS narra las aventuras y desventuras de Perro y Robot en Nueva York durante los años 80.",
+    recommendedByUser: false
+},
+{
+    title: "¿Y donde están las rubias?",
+    image: "https://media.themoviedb.org/t/p/w220_and_h330_face/47gMRj9kPvIqKO8y5K38WtZMmc4.jpg",
+    link: "https://drive.google.com/file/d/1RoYj67A5wmROQvqyQqIKns9rJR4RSYhM/view?usp=drivesdk",
+    generalCategory: "pelicula",
+    specificCategory: "comedia",
+    rating: "6.2",
+    synopsis: "Dos agentes del FBI se disfrazan de mujeres para resolver un caso.",
+    recommendedByUser: true
+},
+{
+    title: "Como robar un banco",
+    image: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fm.media-amazon.com%2Fimages%2FM%2FMV5BNzk3MTE5YWUtYmVjMS00MjczLWI0MzYtMTAxZjRlNDY1OWU2XkEyXkFqcGdeQXVyMTM0NjY0MzU%40._V1_.jpg&f=1&nofb=1&ipt=c6a1772352347d978801f3c31485227b672daa0b5dc213aafa5d1989171fdaab&ipo=images",
+    link: "https://drive.google.com/file/d/1ckk_CJt8awPXg8qrUUQ7RoCvhcu-6IlM/view?usp=drive_link",
+    generalCategory: "pelicula",
+    specificCategory: "accion",
+    rating: "6.6",
+    synopsis: "En este documental sobre crímenes reales, un carismático rebelde de la década de 1990 en Seattle lleva a cabo una serie sin precedentes de robos a bancos sacados de las películas.",
+    recommendedByUser: false
+},
+{
+    title: "Elementos",
+    image: "https://palomaynacho-1f321.kxcdn.com/wp-content/uploads/2023/03/elementos_p_243_ster_f986d537.jpeg",
+    link: "https://drive.google.com/file/d/1-vGKKZ27GBeICeLrRguRZH1iqGCWOM-R/view?usp=drivesdk",
+    generalCategory: "pelicula",
+    specificCategory: "infantil",
+    rating: "7.8",
+    synopsis: "Un grupo de amigos se embarca en una aventura fantástica para salvar el mundo de criaturas mágicas.",
+    recommendedByUser: false
+},
+{
+    title: "Moonfall",
+    image: "https://th.bing.com/th/id/OIP.toosp8FYRkdQb0rOcDZehgAAAA?rs=1&pid=ImgDetMain",
+    link: "https://drive.google.com/file/d/11t1eoYrdMbf06lnnYECSDvFTiRCR6WGJ/view?usp=drive_link",
+    generalCategory: "pelicula",
+    specificCategory: "ciencia ficcion",
+    rating: "6.5",
+    synopsis: "La Tierra se ve amenazada por una colisión con la Luna, y un grupo de astronautas debe salvar al planeta.",
+    recommendedByUser: false
+},
+{
+    title: "The Batman",
+    image: "https://th.bing.com/th/id/OIP.xmlpgQS10ZMkJMjii-3boQHaLE?rs=1&pid=ImgDetMain",
+    link: "https://drive.google.com/file/d/1SVtQCvPtxZU5Urg2m1gOReYNMR2LHcHY/view?usp=drive_link",
+    generalCategory: "pelicula",
+    specificCategory: "aventura",
+    rating: "8.5",
+    synopsis: "Batman se enfrenta a nuevos enemigos mientras investiga una serie de crímenes en Gotham.",
+    recommendedByUser: false
+},
+{
+    title: "Kill Bill: Volumen 1",
+    image: "https://i.pinimg.com/originals/2e/8a/79/2e8a797964ea1e55cdd065a337b69c48.jpg",
+    link: "https://drive.google.com/file/d/1bSjT6vTm_CAcEbYF1L9CwYyMY5Bqqv3M/view?usp=drivesdk",
+    generalCategory: "pelicula",
+    specificCategory: "aventura",
+    rating: "8.9",
+    synopsis: "Una asesina busca venganza contra sus antiguos colegas después de sobrevivir a un intento de asesinato.",
+    recommendedByUser: false
+},
+{
+    title: "Avatar 2: El sentido del agua",
     image: "https://th.bing.com/th/id/R.ce2cc6121e6e5bb6c2375b0261f28d99?rik=XB2aOTP%2bBSxdXw&pid=ImgRaw&r=0",
     link: "https://drive.google.com/file/d/1m8bXMd-siV3Hxm3EDlGsOnsbY7Zgmw5a/view?usp=drive_link",
     generalCategory: "pelicula",
-                specificCategory: "ciencia ficcion"
+    specificCategory: "ciencia ficcion",
+    rating: "Not available",
+    synopsis: "La continuación de Avatar, donde se explora un nuevo mundo y sus habitantes.",
+    recommendedByUser: false
 },
 {
     title: "Kung fu panda 4",
     image: "https://th.bing.com/th/id/OIP.MApNrXU2aY7kShfDa-CIhgHaLH?rs=1&pid=ImgDetMain",
     link: "https://drive.google.com/file/d/1iDbA4Btj4kNeSd8zpkOFrY8WNTjQmVlA/view?usp=sharing",
-                specificCategory: "infantil"
+    generalCategory: "pelicula",
+    specificCategory: "infantil",
+    rating: "Not available",
+    synopsis: "Po y sus amigos se enfrentan a una nueva amenaza que pone en peligro el Valle de la Paz.",
+    recommendedByUser: false
 },
 {
     title: "El pianista",
     image: "https://th.bing.com/th/id/OIP.dcGxlPG1kzzKEG4X94xVKAHaLH?rs=1&pid=ImgDetMain",
     link: "https://drive.google.com/file/d/1HYXLdG6EcrpCkavUBKPDLd_G8DvO748o/view?usp=drive_linkk",
     generalCategory: "pelicula",
-                specificCategory: "drama"
+    specificCategory: "drama",
+    rating: "8.8",
+    synopsis: "Un pianista judío polaco lucha por sobrevivir durante la ocupación nazi en Varsovia.",
+    recommendedByUser: true
 },
 {
     title: "Plan en familia",
     image: "https://th.bing.com/th/id/OIP.vMw5DKLuYVy_K5NjYUxuAQHaLH?rs=1&pid=ImgDetMain",
     link: "https://drive.google.com/file/d/1dmU5N3cYqSvQsF7ihpNPvFyZEiLBqCS7/view?usp=drive_link",
     generalCategory: "pelicula",
-                specificCategory: "aventura"
+    specificCategory: "aventura",
+    rating: "7.2",
+    synopsis: "Una familia planea unas vacaciones que se convierten en una aventura inesperada.",
+    recommendedByUser: false
 },
 {
     title: "Spy x family",
     image: "https://th.bing.com/th/id/OIP._EW1hVgpjGlFTB_EgXd5oQAAAA?rs=1&pid=ImgDetMain",
     link: "https://drive.google.com/drive/folders/1cBDr9JF_dfM-e7wvlGcQ8aokK2FQvcH4?usp=sharing",
     generalCategory: "serie",
-                specificCategory: "drama"
+    specificCategory: "drama",
+    rating: "8.5",
+    synopsis: "Una familia inusual se forma con el propósito secreto de completar misiones encubiertas.",
+    recommendedByUser: true
 },
 {
     title: "El niño y la garza",
     image: "https://th.bing.com/th/id/OIP.ZX6u9Y5xkvDONgwf-iAzbwHaK0?rs=1&pid=ImgDetMain",
     link: "https://drive.google.com/file/d/1dYCRoAF2i0sAzAsatg1ieVnJTpLSjidK/view?usp=drive_link",
     generalCategory: "pelicula",
-                specificCategory: "aventura"
+    specificCategory: "aventura",
+    rating: "7.6",
+    synopsis: "Un niño descubre un vínculo especial con una garza y se aventura en un viaje para protegerla.",
+    recommendedByUser: false
 },
 {
     title: "Matrix [SAGA]",
     image: "https://image.tmdb.org/t/p/original/pEoqbqtLc4CcwDUDqxmEDSWpWTZ.jpg",
     link: "https://drive.google.com/drive/folders/13ased5riaOXP73Jp83u4w_dns5kfl2EQ",
     generalCategory: "pelicula",
-                specificCategory: "ciencia ficcion"
+    specificCategory: "ciencia ficcion",
+    rating: "9.0",
+    synopsis: "Neo lucha por liberar a la humanidad del control de las máquinas en un mundo simulado.",
+    recommendedByUser: false
 },
 {
     title: "¿Qué le pasó a lunes?",
     image: "https://image.tmdb.org/t/p/original/hdOYrMf6jRcQ43wJXyMgubyoSlk.jpg",
     link: "https://drive.google.com/file/d/1lRlXrkRYR7v3bOdmn5fLsL2bcGyg2dGp/view?usp=drive_link",
     generalCategory: "pelicula",
-                specificCategory: "ciencia ficcion"
+    specificCategory: "ciencia ficcion",
+    rating: "7.9",
+    synopsis: "En un futuro distópico, siete hermanas se esconden bajo una identidad compartida para sobrevivir.",
+    recommendedByUser: false
 }
-        ];
-        function displayMovies(filteredMovies) {
-            const movieList = document.getElementById("movieList");
-            movieList.innerHTML = "";
 
-            filteredMovies.forEach(movie => {
-                const movieDiv = document.createElement("div");
-                movieDiv.classList.add("movie");
-                movieDiv.innerHTML = `
-                    <img src="${movie.image}" alt="${movie.title}">
-                    <h2>${movie.title}</h2>
-                `;
-                movieDiv.addEventListener("click", () => {
-                    window.open(movie.link, "_blank");
-                });
-                movieList.appendChild(movieDiv);
-            });
-        }
+         // Añade más películas aquí con la misma estructura
+     ];
 
-        function filterByGeneralCategory(category) {
-            const filteredMovies = movies.filter(movie => movie.generalCategory === category);
-            displayMovies(filteredMovies);
-        }
+     function displayMovies(filteredMovies) {
+         const movieList = document.getElementById("movieList");
+         movieList.innerHTML = "";
 
-        function filterBySpecificCategory(category) {
-            const filteredMovies = movies.filter(movie => removeAccents(movie.specificCategory.toLowerCase()) === removeAccents(category.toLowerCase()));
-            displayMovies(filteredMovies);
-        }
+         filteredMovies.forEach(movie => {
+             const movieDiv = document.createElement("div");
+             movieDiv.classList.add("movie");
+             movieDiv.innerHTML = `
+                 <img src="${movie.image}" alt="${movie.title}">
+                 <h2>${movie.title}</h2>
+                 <div class="movie-info">
+                     <p><strong>Calificación IMDB:</strong> ${movie.rating}</p>
+                     <p><strong>Sinopsis:</strong> ${movie.synopsis}</p>
+                     ${movie.recommendedByUser ? '<p><strong>Recomendada por uno de nuestros usuarios</strong></p>' : ''}
+                     <button onclick="window.open('${movie.link}', '_blank')">Ver Película</button>
+                 </div>
+             `;
+             
+             movieDiv.querySelector("img").addEventListener("click", (event) => {
+                 event.stopPropagation();
+                 const infoDiv = movieDiv.querySelector(".movie-info");
+                 const isOpen = infoDiv.style.display === "block";
+                 
+                 document.querySelectorAll(".movie-info").forEach(info => {
+                     if (info !== infoDiv) {
+                         info.style.display = "none";
+                     }
+                 });
+                 
+                 document.querySelectorAll(".movie").forEach(movie => {
+                     if (movie !== movieDiv) {
+                         movie.style.width = "200px";
+                     }
+                 });
+                 
+                 infoDiv.style.display = isOpen ? "none" : "block";
+                 movieDiv.style.width = isOpen ? "200px" : "300px";
+             });
+             
+             movieList.appendChild(movieDiv);
+         });
+     }
 
-        function searchMovies() {
-            const query = document.getElementById("searchInput").value.toLowerCase();
-            const filteredMovies = movies.filter(movie => removeAccents(movie.title.toLowerCase()).includes(removeAccents(query)));
-            displayMovies(filteredMovies);
-        }
+     function filterByGeneralCategory(category) {
+         const filteredMovies = movies.filter(movie => movie.generalCategory === category);
+         displayMovies(filteredMovies);
+     }
 
-        // Mostrar todas las películas inicialmente
-        displayMovies(movies);
-    </script>
+     function filterBySpecificCategory(category) {
+         const filteredMovies = movies.filter(movie => removeAccents(movie.specificCategory.toLowerCase()) === removeAccents(category.toLowerCase()));
+         displayMovies(filteredMovies);
+     }
+
+     function searchMovies() {
+         const query = document.getElementById("searchInput").value.toLowerCase();
+         const filteredMovies = movies.filter(movie => removeAccents(movie.title.toLowerCase()).includes(removeAccents(query)));
+         displayMovies(filteredMovies);
+     }
+// Mostrar todas las películas inicialmente
+displayMovies(movies);
+ </script>
 </body>
 </html>
