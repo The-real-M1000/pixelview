@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelView</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">PixelView</div>
+        <div class="nav-buttons">
+            <button onclick="window.location.href='index.html'">Inicio</button>
+            <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
+            <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
+            <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contáctanos</button>
+            <button onclick="window.open('https://www.paypal.me/jatmilop', '_blank')">Donar</button>
+        </div>
+        
+    </header>
+
+    <div class="search-bar">
+        <input type="text" placeholder="Buscar películas..." id="searchInput">
+        <button id="searchButton">Buscar</button>
+        <a href="subir.html"><button id="uploadButton">Subir película</button></a>
+    </div>
+
+    <div class="generes" id="genereButtons">
+        <button class="genere-btn" data-genere="all">Todos los géneros</button>
+        <button class="genere-btn" data-genere="accion">Acción</button>
+        <button class="genere-btn" data-genere="aventura">Aventura</button>
+        <button class="genere-btn" data-genere="ciencia-ficcion">Ciencia Ficción</button>
+        <button class="genere-btn" data-genere="infantil">Infantil</button>
+        <button class="genere-btn" data-genere="comedia">Comedia</button>
+        <button class="genere-btn" data-genere="drama">Drama</button>
+        <button class="genere-btn" data-genere="terror">Terror</button>
+    </div>
+
+    <div class="video-grid" id="videoList">
+        <!-- Video cards will be dynamically added here -->
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
