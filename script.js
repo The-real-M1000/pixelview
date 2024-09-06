@@ -127,6 +127,7 @@ function performSearch() {
     console.log('Buscando:', query); // Reemplaza esto con tu lógica de búsqueda
 }
 
+
 // Event listener para la búsqueda
 if (searchButton) {
     searchButton.addEventListener('click', () => {
@@ -150,29 +151,3 @@ document.addEventListener('DOMContentLoaded', (event) => {
         loadVideos();
     }
 });
-
-// Get the modal
-const instructionsPopup = document.getElementById("instructionsPopup");
-
-// Get the button that opens the modal
-const instructionsButton = document.getElementById("instructionsButton");
-
-// Get the <span> element that closes the modal
-const closeButton = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-instructionsButton.onclick = function() {
-    instructionsPopup.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-closeButton.onclick = function() {
-    instructionsPopup.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-    if (event.target == instructionsPopup) {
-        instructionsPopup.style.display = "none";
-    }
-}
