@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8QBBRRB3R"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-H8QBBRRB3R');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelView: Películas y series gratis</title>
+    <link rel="icon" href="favicon.ico">
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    <!-- Vinculación al archivo CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 onclick="window.location.href='index.html'">PixelView</h1>
+            <div class="buttons">
+                <button onclick="window.location.href='index.html'">Inicio</button>
+                <button onclick="window.open('https://www.paypal.me/jatmilop', '_blank')">Donar</button>
+               
+                <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
+                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
+                <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contáctanos</button>
+            </div>
+        </div>
+  
+        <div class="header">
+            <input type="text" id="search-bar" placeholder="Buscar...">
+            <button id="search-button">Buscar</button>
+            <button id="upload-button" onclick="window.location.href='subir.html'">Subir Película</button>
+        </div>
+
+        <div class="category-buttons" id="genereButtons">
+            <button class="genere-btn" data-genere="all">Todos</button>
+            <button class="genere-btn" data-genere="Aventura">Aventura</button>
+            <button class="genere-btn" data-genere="Ciencia Ficción">Ciencia Ficción</button>
+            <button class="genere-btn" data-genere="Infantil">Infantil</button>
+            <button class="genere-btn" data-genere="Comedia">Comedia</button>
+            <button class="genere-btn" data-genere="Drama">Drama</button>
+            <button class="genere-btn" data-genere="Terror">Terror</button>
+        </div>
+
+        <div class="movie-list" id="videoList">
+            <!-- Ejemplo de una película (puedes eliminarlo después) -->
+            <div class="movie">
+                <img src="ruta-a-la-imagen.jpg" alt="Título de la película">
+                <h2>Título de la película</h2>
+            </div>
+            <!-- Más elementos de película se agregarán aquí dinámicamente -->
+        </div>
+    </div>
+    
+    <footer>
+        <img src="logo.png" alt="Logo"> PixelView &copy; 2024
+    </footer>
+    <!-- Vinculación al archivo JS -->
+    <script type="module" src="scripts.js"></script>
+</body>
+</html>
