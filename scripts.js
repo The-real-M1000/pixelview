@@ -1,10 +1,10 @@
 // Importar Firebase y Firestore desde el CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, setDoc, doc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyAmHL0-1uJZgPAhxqDN4zA1uUXH-X6YtzY",
+    apiKey: "AIzaSyAmHL0-1uJZgPAhxqDN4zA1uXH-X6YtzY",
     authDomain: "pixelview-30.firebaseapp.com",
     projectId: "pixelview-30",
     storageBucket: "pixelview-30.appspot.com",
@@ -75,8 +75,11 @@ function setupVideoForm() {
             const videoGenere = document.getElementById("videoGenere").value;
 
             try {
-                // Añadir datos del video a Firestore
-                await addDoc(collection(db, "videos"), {
+                // Crear un ID de documento basado en el título del video
+                const docId = videoTitle.toLowerCase().replace(/\s+/g, '-');
+
+                // Añadir datos del video a Firestore con el ID personalizado
+                await setDoc(doc(db, "videos", docId), {
                     title: videoTitle,
                     videoUrl: videoUrl,
                     imageUrl: imageUrl,
