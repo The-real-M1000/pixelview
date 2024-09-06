@@ -16,109 +16,89 @@ header {
     background-color: #000000;
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    flex-direction: row; /* Cambiar a fila para PC */
     align-items: center;
+    justify-content: space-between; /* Espacio entre logo y botones */
 }
 
 .logo {
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ffd700;
+    color: #f4c542; /* Color de la marca */
 }
+
 /* Estilos para los botones de navegación */
 .nav-buttons {
     display: flex;
-    justify-content: center;
     gap: 10px;
-    margin: 20px 0;
 }
 
 .nav-buttons button {
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 5px;
-    background-color: #ffd700;
+    border-radius: 20px; /* Bordes más redondeados */
+    background-color: #f4c542; /* Color de la marca */
     color: #000000;
     font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Agregamos transición de transformación */
 }
 
 .nav-buttons button:hover {
-    background-color: #ffea00;
-    color: #000000;
+    background-color: #e0b532;
+    transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
 }
 
-/* Estilos adicionales para hacer los botones más atractivos */
-.nav-buttons button:active {
-    background-color: #e5c100;
+/* Search container styles */
+.search-container {
+    display: flex;  
+    flex-direction: row; /* Mantener en fila para PC */
+    align-items: center; /* Centra los elementos */
+    margin: 2rem 0; /* Espacio alrededor del contenedor */
 }
 
-.nav-buttons button:focus {
-    outline: none;
-    box-shadow: 0 0 5px #ffd700;
-}
-
-nav ul {
-    display: flex;
-    list-style-type: none;
-}
-
-nav ul li {
-    margin-left: 1rem;
-}
-
-nav ul li a {
-    color: #ffd700;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-nav ul li a:hover {
-    background-color: #ffd700;
-    color: #000000;
-}
-
-/* Search bar styles */
 .search-bar {
-    display: flex;
-    justify-content: center;
-    margin: 2rem 0;
+    display: flex; /* Mantiene la barra de búsqueda y el botón de búsqueda en línea */
+    width: 100%; /* Ocupar el 100% del ancho del contenedor */
 }
 
 .search-bar input {
-    width: 40%;
-    padding: 0.5rem;
+    flex: 1; /* Permite que el input ocupe todo el espacio disponible */
+    padding: 0.75rem; /* Aumentar el relleno */
     border: none;
-    border-radius: 5px 0 0 5px;
+    border-radius: 20px 0 0 20px; /* Bordes más redondeados */
     background-color: #333333;
     color: #ffffff;
+    font-size: 1rem; /* Aumentar el tamaño de la fuente */
 }
 
-.search-bar button, #uploadButton {
+.search-bar button {
+    padding: 0.75rem 1.5rem; /* Aumentar el relleno */
+    border: none;
+    border-radius: 0 20px 20px 0; /* Bordes más redondeados */
+    background-color: #f4c542; /* Color de la marca */
+    color: #000000;
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+}
+
+/* Estilos para el botón de subir película */
+#uploadButton {
     padding: 0.5rem 1rem;
     border: none;
-    border-radius: 0 5px 5px 0;
-    background-color: #ffd700;
+    border-radius: 20px; /* Bordes más redondeados */
+    background-color: #f4c542; /* Color de la marca */
     color: #000000;
     cursor: pointer;
-    margin-left: 10px;
+    transition: background-color 0.3s; /* Transición para el hover */
+    margin-top: 1rem; /* Margen superior para el botón de subir */
 }
 
-.search-bar button:hover, #uploadButton:hover {
-    background-color: #ffea00;
+#uploadButton:hover {
+    background-color: #e0b532; /* Cambio de color al pasar el mouse */
 }
-
-#uploadButton {
-    border-radius: 5px; /* Ajustamos para que el botón tenga bordes redondeados */
-    margin-left: 10px; /* Espacio entre los botones */
-}
-
 
 /* Category and Genre buttons */
-.categories, .generes {
+.generes {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -126,19 +106,19 @@ nav ul li a:hover {
     margin-bottom: 2rem;
 }
 
-.category-btn, .genere-btn {
+.genere-btn {
     padding: 0.5rem 1rem;
-    border: 1px solid #ffd700;
-    border-radius: 20px;
+    border: 1px solid #f4c542; /* Color de la marca */
+    border-radius: 20px; /* Bordes más redondeados */
     background-color: transparent;
-    color: #ffd700;
+    color: #f4c542; /* Color de la marca */
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
 }
 
-.category-btn:hover, .genere-btn:hover,
-.category-btn.active, .genere-btn.active {
-    background-color: #ffd700;
+.genere-btn:hover,
+.genere-btn.active {
+    background-color: #f4c542; /* Color de la marca */
     color: #000000;
 }
 
@@ -152,7 +132,7 @@ nav ul li a:hover {
 
 .video-card {
     background-color: #2a2a2a;
-    border-radius: 5px;
+    border-radius: 10px; /* Bordes más redondeados */
     overflow: hidden;
     transition: transform 0.3s;
     cursor: pointer;
@@ -187,21 +167,22 @@ form {
     margin: 2rem auto;
     padding: 1rem;
     background-color: #2a2a2a;
-    border-radius: 5px;
+    border-radius: 10px; /* Bordes más redondeados */
 }
 
 form label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #ffd700;
+    color: #f4c542; /* Color de la marca */
 }
 
-form input, form select {
+form input,
+form select {
     width: 100%;
     padding: 0.5rem;
     margin-bottom: 1rem;
     border: none;
-    border-radius: 3px;
+    border-radius: 10px; /* Bordes más redondeados */
     background-color: #333333;
     color: #ffffff;
 }
@@ -210,13 +191,95 @@ form button {
     width: 100%;
     padding: 0.5rem;
     border: none;
-    border-radius: 3px;
-    background-color: #ffd700;
+    border-radius: 10px; /* Bordes más redondeados */
+    background-color: #f4c542; /* Color de la marca */
     color: #000000;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 form button:hover {
-    background-color: #ffea00;
+    background-color: #e0b532;
+}
+
+form button:active {
+    background-color: #e0b532; /* Nuevo color cuando el botón del formulario está presionado */
+}
+
+/* The popup container */
+.popup {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
+}
+
+/* Popup content */
+.popup-content {
+    background-color: #2a2a2a;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+    border-radius: 10px;
+    color: #ffffff;
+}
+
+/* The close button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Media Queries para móvil */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column; /* Cambiar a columna para móviles */
+        padding: 0.5rem;
+    }
+
+    .search-container {
+        flex-direction: column; /* Cambiar a columna para móviles */
+        margin: 1rem 0; /* Reducir espacio en móviles */
+    }
+
+    .search-bar {
+        flex-direction: column; /* Cambiar a columna para móviles */
+        width: auto; /* Permitir que el contenedor se ajuste */
+    }
+
+    .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Ajustar columnas en móviles */
+    }
+
+    .video-card img {
+        height: 200px; /* Reducir altura de imágenes en móviles */
+    }
+
+    form {
+        padding: 0.5rem; /* Reducir padding en móviles */
+    }
+
+    form input, form select {
+        padding: 0.5rem; /* Mantener padding en inputs */
+    }
+
+    form button {
+        padding: 0.5rem; /* Mantener padding en botones */
+    }
 }
