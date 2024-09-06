@@ -1,285 +1,78 @@
-/* Reset and base styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Película</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <header>
+        <div class="logo">PixelView</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#">Reportar un Error</a></li>
+                <li><a href="https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031" target="_blank">Canal de WhatsApp</a></li>
+                <li><a href="mailto:streaming.pixelview@gmail.com" target="_blank">Contáctanos</a></li>
+                <li><a href="#">Donar</a></li>
+            </ul>
+        </nav>
+    </header>
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #1a1a1a;
-    color: #ffffff;
-}
+    <form id="videoForm" action="/submit_form" method="POST">
+        <label for="videoTitle">Título:</label>
+        <input type="text" id="videoTitle" name="videoTitle" required>
 
-/* Header styles */
-header {
-    background-color: #000000;
-    padding: 1rem;
-    display: flex;
-    flex-direction: row; /* Cambiar a fila para PC */
-    align-items: center;
-    justify-content: space-between; /* Espacio entre logo y botones */
-}
+        <label for="videoUrl">URL del video (Google Drive):</label>
+        <input type="url" id="videoUrl" name="videoUrl" required>
 
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #f4c542; /* Color de la marca */
-}
+        <label for="imageUrl">URL de la portada (Google Drive):</label>
+        <input type="url" id="imageUrl" name="imageUrl" required>
 
-/* Estilos para los botones de navegación */
-.nav-buttons {
-    display: flex;
-    gap: 10px;
-}
+        <label for="videoType">Tipo:</label>
+        <select id="videoType" name="videoType" required>
+            <option value="">Selecciona el tipo</option>
+            <option value="pelicula">Película</option>
+            <option value="serie">Serie</option>
+        </select>
 
-.nav-buttons button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 20px; /* Bordes más redondeados */
-    background-color: #f4c542; /* Color de la marca */
-    color: #000000;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Agregamos transición de transformación */
-}
+        <label for="videoGenere">Género:</label>
+        <select id="videoGenere" name="videoGenere" required>
+            <option value="">Selecciona un género</option>
+            <option value="accion">Acción</option>
+            <option value="aventura">Aventura</option>
+            <option value="ciencia-ficcion">Ciencia Ficción</option>
+            <option value="infantil">Infantil</option>
+            <option value="comedia">Comedia</option>
+            <option value="drama">Drama</option>
+            <option value="terror">Terror</option>
+        </select>
 
-.nav-buttons button:hover {
-    background-color: #e0b532;
-    transform: scale(1.05); /* Efecto de aumento al pasar el mouse */
-}
+        <!-- Widget de reCAPTCHA -->
+        <div class="g-recaptcha" data-sitekey="6LfdzTcqAAAAALhXpkDhO9xgyn4uZguLgVpRytYG" data-action="LOGIN"></div>
+        <br/>
 
-/* Search container styles */
-.search-container {
-    display: flex;  
-    flex-direction: row; /* Mantener en fila para PC */
-    align-items: center; /* Centra los elementos */
-    margin: 2rem 0; /* Espacio alrededor del contenedor */
-}
+        <button type="submit">Subir video</button>
+    </form>
 
-.search-bar {
-    display: flex; /* Mantiene la barra de búsqueda y el botón de búsqueda en línea */
-    width: 100%; /* Ocupar el 100% del ancho del contenedor */
-}
+    <button id="instructionsButton" type="button">Instrucciones para Subir Videos</button>
 
-.search-bar input {
-    flex: 1; /* Permite que el input ocupe todo el espacio disponible */
-    padding: 0.75rem; /* Aumentar el relleno */
-    border: none;
-    border-radius: 20px 0 0 20px; /* Bordes más redondeados */
-    background-color: #333333;
-    color: #ffffff;
-    font-size: 1rem; /* Aumentar el tamaño de la fuente */
-}
+    <div id="instructionsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close">&times;</span>
+            <h2>Instrucciones para Subir Videos</h2>
+            <p>1. Asegúrese de que el video esté alojado en Google Drive y que los permisos estén configurados en "Cualquiera con el enlace".</p>
+            <p>2. Ingrese el título del video tal como desea que aparezca en la plataforma.</p>
+            <p>3. Pegue el enlace directo al video en el campo "URL del video".</p>
+            <p>4. Pegue el enlace de la portada del video en el campo "URL de la portada". Este también debe ser un enlace de Google Drive.</p>
+            <p>5. Seleccione el tipo de contenido, ya sea "Película" o "Serie".</p>
+            <p>6. Elija el género adecuado para el video.</p>
+            <p>7. Haga clic en "Subir video" para completar el proceso.</p>
+        </div>
+    </div>
 
-.search-bar button {
-    padding: 0.75rem 1.5rem; /* Aumentar el relleno */
-    border: none;
-    border-radius: 0 20px 20px 0; /* Bordes más redondeados */
-    background-color: #f4c542; /* Color de la marca */
-    color: #000000;
-    cursor: pointer; /* Cambia el cursor al pasar por encima */
-}
-
-/* Estilos para el botón de subir película */
-#uploadButton {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 20px; /* Bordes más redondeados */
-    background-color: #f4c542; /* Color de la marca */
-    color: #000000;
-    cursor: pointer;
-    transition: background-color 0.3s; /* Transición para el hover */
-    margin-top: 1rem; /* Margen superior para el botón de subir */
-}
-
-#uploadButton:hover {
-    background-color: #e0b532; /* Cambio de color al pasar el mouse */
-}
-
-/* Category and Genre buttons */
-.generes {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
-}
-
-.genere-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #f4c542; /* Color de la marca */
-    border-radius: 20px; /* Bordes más redondeados */
-    background-color: transparent;
-    color: #f4c542; /* Color de la marca */
-    cursor: pointer;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.genere-btn:hover,
-.genere-btn.active {
-    background-color: #f4c542; /* Color de la marca */
-    color: #000000;
-}
-
-/* Video grid styles */
-.video-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 0 1rem;
-}
-
-.video-card {
-    background-color: #2a2a2a;
-    border-radius: 10px; /* Bordes más redondeados */
-    overflow: hidden;
-    transition: transform 0.3s;
-    cursor: pointer;
-}
-
-.video-card:hover {
-    transform: scale(1.05);
-}
-
-.video-card img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
-
-.video-card .title {
-    padding: 0.5rem;
-    font-size: 0.9rem;
-    text-align: center;
-}
-
-.video-card .info {
-    padding: 0.5rem;
-    font-size: 0.8rem;
-    text-align: center;
-    color: #aaaaaa;
-}
-
-/* Form styles */
-form {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #2a2a2a;
-    border-radius: 10px; /* Bordes más redondeados */
-}
-
-form label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #f4c542; /* Color de la marca */
-}
-
-form input,
-form select {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: none;
-    border-radius: 10px; /* Bordes más redondeados */
-    background-color: #333333;
-    color: #ffffff;
-}
-
-form button {
-    width: 100%;
-    padding: 0.5rem;
-    border: none;
-    border-radius: 10px; /* Bordes más redondeados */
-    background-color: #f4c542; /* Color de la marca */
-    color: #000000;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-form button:hover {
-    background-color: #e0b532;
-}
-
-form button:active {
-    background-color: #e0b532; /* Nuevo color cuando el botón del formulario está presionado */
-}
-
-/* The popup container */
-.popup {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 1000; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.7); /* Black w/ opacity */
-}
-
-/* Popup content */
-.popup-content {
-    background-color: #2a2a2a;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    border-radius: 10px;
-    color: #ffffff;
-}
-
-/* The close button */
-.close {
-    color: #aaaaaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #ffffff;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-/* Media Queries para móvil */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column; /* Cambiar a columna para móviles */
-        padding: 0.5rem;
-    }
-
-    .search-container {
-        flex-direction: column; /* Cambiar a columna para móviles */
-        margin: 1rem 0; /* Reducir espacio en móviles */
-    }
-
-    .search-bar {
-        flex-direction: column; /* Cambiar a columna para móviles */
-        width: auto; /* Permitir que el contenedor se ajuste */
-    }
-
-    .video-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Ajustar columnas en móviles */
-    }
-
-    .video-card img {
-        height: 200px; /* Reducir altura de imágenes en móviles */
-    }
-
-    form {
-        padding: 0.5rem; /* Reducir padding en móviles */
-    }
-
-    form input, form select {
-        padding: 0.5rem; /* Mantener padding en inputs */
-    }
-
-    form button {
-        padding: 0.5rem; /* Mantener padding en botones */
-    }
-}
+    <script type="module" src="script.js"></script>
+</body>
+</html>
