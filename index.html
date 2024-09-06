@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelView</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
 </head>
 <body>
     <header>
@@ -16,15 +17,16 @@
             <button onclick="window.open('mailto:streaming.pixelview@gmail.com', '_blank')">Contáctanos</button>
             <button onclick="window.open('https://www.paypal.me/jatmilop', '_blank')">Donar</button>
         </div>
-        
     </header>
 
-    <div class="search-bar">
-        <input type="text" placeholder="Buscar películas..." id="searchInput">
-        <button id="searchButton">Buscar</button>
-        <a href="subir.html"><button id="uploadButton">Subir película</button></a>
+    <div class="search-container">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar...">
+            <button id="searchButton">Buscar</button>
+        </div>
+        <button id="uploadButton">Subir Película</button>
     </div>
-
+    
     <div class="generes" id="genereButtons">
         <button class="genere-btn" data-genere="all">Todos los géneros</button>
         <button class="genere-btn" data-genere="accion">Acción</button>
