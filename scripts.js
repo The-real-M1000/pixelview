@@ -32,6 +32,18 @@ let acceptButton;
 // Variable para almacenar el filtro de género actual
 let currentGenere = 'all';
 
+// Función para normalizar el texto del género
+function normalizeGenre(genre) {
+    return genre.toLowerCase()
+                .replace(/\s+/g, '-')  // Reemplaza espacios con guiones
+                .replace(/á/g, 'a')    // Elimina acentos
+                .replace(/é/g, 'e')
+                .replace(/í/g, 'i')
+                .replace(/ó/g, 'o')
+                .replace(/ú/g, 'u')
+                .replace(/ñ/g, 'n');
+}
+
 // Función para inicializar elementos del DOM
 function initializeElements() {
     videoList = document.getElementById('videoList');
@@ -42,27 +54,16 @@ function initializeElements() {
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
 
-    if (!videoList) {
-        console.error("Elemento 'videoList' no encontrado");
-    }
-    if (!genereButtons) {
-        console.error("Elemento 'genereButtons' no encontrado");
-    }
-    if (!searchInput) {
-        console.error("Elemento 'searchInput' no encontrado");
-    }
-    if (!searchButton) {
-        console.error("Elemento 'searchButton' no encontrado");
-    }
-    if (!instructionsPopup) {
-        console.error("Elemento 'instructionsPopup' no encontrado");
-    }
-    if (!acceptButton) {
-        console.error("Elemento 'acceptButton' no encontrado");
-    }
+    if (!videoList) console.error("Elemento 'videoList' no encontrado");
+    if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
+    if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
+    if (!searchButton) console.error("Elemento 'searchButton' no encontrado");
+    if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
+    if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
+    if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
 }
 
-// Función para subir video (solo si el formulario está presente)
+// Función para subir video
 function setupVideoForm() {
     if (videoForm) {
         videoForm.addEventListener("submit", async (e) => {
@@ -72,13 +73,10 @@ function setupVideoForm() {
             const videoUrl = document.getElementById("videoUrl").value;
             const imageUrl = document.getElementById("imageUrl").value;
             const videoType = document.getElementById("videoType").value;
-            const videoGenere = document.getElementById("videoGenere").value;
+            const videoGenere = normalizeGenre(document.getElementById("videoGenere").value);
 
             try {
-                // Crear un ID de documento basado en el título del video
                 const docId = videoTitle.toLowerCase().replace(/\s+/g, '-');
-
-                // Añadir datos del video a Firestore con el ID personalizado
                 await setDoc(doc(db, "videos", docId), {
                     title: videoTitle,
                     videoUrl: videoUrl,
@@ -87,11 +85,13 @@ function setupVideoForm() {
                     genere: videoGenere
                 });
 
+                console.log("Video subido con género:", videoGenere);
                 alert("Video subido correctamente");
-                loadVideos(); // Cargar los videos actualizados
-                videoForm.reset(); // Limpiar el formulario
+                loadVideos();
+                videoForm.reset();
             } catch (error) {
                 console.error("Error al subir el video: ", error);
+                alert("Error al subir el video. Por favor, intenta de nuevo.");
             }
         });
     }
@@ -99,15 +99,14 @@ function setupVideoForm() {
 
 // Función para cargar y mostrar videos
 async function loadVideos() {
-    console.log("Cargando videos...");
+    console.log("Cargando videos para el género:", currentGenere);
     if (!videoList) {
         console.error("videoList no está definido");
         return;
     }
-    videoList.innerHTML = ""; // Limpiar lista antes de recargar
+    videoList.innerHTML = "";
 
     let videosQuery = collection(db, "videos");
-
     if (currentGenere !== 'all') {
         videosQuery = query(videosQuery, where("genere", "==", currentGenere));
     }
@@ -115,8 +114,8 @@ async function loadVideos() {
     try {
         const querySnapshot = await getDocs(videosQuery);
         if (querySnapshot.empty) {
-            console.log("No se encontraron videos");
-            videoList.innerHTML = "<p>No se encontraron videos.</p>";
+            console.log("No se encontraron videos para el género:", currentGenere);
+            videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenere}.</p>`;
         } else {
             querySnapshot.forEach((doc) => {
                 const videoData = doc.data();
@@ -161,37 +160,47 @@ function hidePopup() {
     }
 }
 
-// Configurar event listeners
-function setupEventListeners() {
+// Función para configurar los botones de género
+function setupGenreButtons() {
     if (genereButtons) {
         genereButtons.addEventListener('click', (e) => {
-            if (e.target.classList.contains('genere-btn')) {
-                genereButtons.querySelectorAll('.genere-btn').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
+            if (e.target.tagName === 'BUTTON') {
+                let selectedGenre = e.target.textContent;
+                console.log("Género seleccionado (original):", selectedGenre);
                 
-                currentGenere = e.target.dataset.genere;
-                console.log("Género seleccionado:", currentGenere);
+                if (selectedGenre.toLowerCase() === 'todos') {
+                    currentGenere = 'all';
+                } else {
+                    currentGenere = normalizeGenre(selectedGenre);
+                }
+                
+                console.log("Género normalizado:", currentGenere);
                 loadVideos();
+
+                const buttons = genereButtons.querySelectorAll('button');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
             }
         });
     }
+}
 
+// Configurar event listeners
+function setupEventListeners() {
+    if (searchButton) {
+        searchButton.addEventListener("click", performSearch);
+    }
     if (searchInput) {
-        searchInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                event.preventDefault();
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
                 performSearch();
             }
         });
     }
-
-    if (searchButton) {
-        searchButton.addEventListener('click', performSearch);
-    }
-
     if (acceptButton) {
         acceptButton.addEventListener('click', hidePopup);
     }
+    setupGenreButtons();
 }
 
 // Función para buscar videos
@@ -202,7 +211,7 @@ async function performSearch() {
     }
 
     const query = searchInput.value.toLowerCase();
-    videoList.innerHTML = ""; // Limpiar lista antes de recargar
+    videoList.innerHTML = "";
 
     const videosQuery = collection(db, "videos");
     try {
@@ -234,5 +243,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setupVideoForm();
     setupEventListeners();
     loadVideos();
-    showPopup(); // Mostrar el pop-up al cargar la página
+    showPopup();
 });
