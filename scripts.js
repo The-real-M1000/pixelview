@@ -26,6 +26,8 @@ let genereButtons;
 let searchInput;
 let searchButton;
 let videoForm;
+let instructionsPopup;
+let acceptButton;
 
 // Variable para almacenar el filtro de género actual
 let currentGenere = 'all';
@@ -34,9 +36,11 @@ let currentGenere = 'all';
 function initializeElements() {
     videoList = document.getElementById('videoList');
     genereButtons = document.getElementById('genereButtons');
-    searchInput = document.getElementById('searchInput');
-    searchButton = document.getElementById('searchButton');
+    searchInput = document.getElementById('search-bar');
+    searchButton = document.getElementById('search-button');
     videoForm = document.getElementById('videoForm');
+    instructionsPopup = document.getElementById('instructionsPopup');
+    acceptButton = document.getElementById('acceptButton');
 
     if (!videoList) {
         console.error("Elemento 'videoList' no encontrado");
@@ -49,6 +53,12 @@ function initializeElements() {
     }
     if (!searchButton) {
         console.error("Elemento 'searchButton' no encontrado");
+    }
+    if (!instructionsPopup) {
+        console.error("Elemento 'instructionsPopup' no encontrado");
+    }
+    if (!acceptButton) {
+        console.error("Elemento 'acceptButton' no encontrado");
     }
 }
 
@@ -134,6 +144,20 @@ function createVideoCard(videoData) {
     return videoContainer;
 }
 
+// Función para mostrar el pop-up
+function showPopup() {
+    if (instructionsPopup) {
+        instructionsPopup.style.display = 'block';
+    }
+}
+
+// Función para ocultar el pop-up
+function hidePopup() {
+    if (instructionsPopup) {
+        instructionsPopup.style.display = 'none';
+    }
+}
+
 // Configurar event listeners
 function setupEventListeners() {
     if (genereButtons) {
@@ -160,6 +184,10 @@ function setupEventListeners() {
 
     if (searchButton) {
         searchButton.addEventListener('click', performSearch);
+    }
+
+    if (acceptButton) {
+        acceptButton.addEventListener('click', hidePopup);
     }
 }
 
@@ -203,4 +231,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setupVideoForm();
     setupEventListeners();
     loadVideos();
+    showPopup(); // Mostrar el pop-up al cargar la página
 });
