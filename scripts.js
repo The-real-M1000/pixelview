@@ -205,12 +205,7 @@ function setupEventListeners() {
             currentPage++;
             loadVideos(false);
         });
-    }
-    if (uploadButton) {
-        uploadButton.addEventListener('click', () => {
-            alert('Funcionalidad de subir película aún no implementada');
-        });
-    }
+    
     setupGenreButtons();
 }
 
