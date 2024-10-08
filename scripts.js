@@ -1,6 +1,6 @@
 // Importar Firebase y Firestore desde el CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, setDoc, doc, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -70,12 +70,41 @@ function initializeElements() {
     if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
 }
 
-// Función para subir video (sin cambios)
+// Función para subir video
 function setupVideoForm() {
-    // ... (código existente sin cambios)
+    if (videoForm) {
+        videoForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const videoTitle = document.getElementById("videoTitle").value;
+            const videoUrl = document.getElementById("videoUrl").value;
+            const imageUrl = document.getElementById("imageUrl").value;
+            const videoType = document.getElementById("videoType").value;
+            const videoGenere = normalizeGenre(document.getElementById("videoGenere").value);
+
+            try {
+                const docId = videoTitle.toLowerCase().replace(/\s+/g, '-');
+                await setDoc(doc(db, "videos", docId), {
+                    title: videoTitle,
+                    videoUrl: videoUrl,
+                    imageUrl: imageUrl,
+                    type: videoType,
+                    genere: videoGenere
+                });
+
+                console.log("Video subido con género:", videoGenere);
+                alert("Video subido correctamente");
+                loadVideos();
+                videoForm.reset();
+            } catch (error) {
+                console.error("Error al subir el video: ", error);
+                alert("Error al subir el video. Por favor, intenta de nuevo.");
+            }
+        });
+    }
 }
 
-// Función para cargar y mostrar videos (modificada para paginación)
+// Función para cargar y mostrar videos
 async function loadVideos(isLoadMore = false) {
     console.log("Cargando videos para el género:", currentGenere);
     if (!videoList) {
@@ -122,7 +151,7 @@ async function loadVideos(isLoadMore = false) {
     }
 }
 
-// Función para crear un elemento de tarjeta de video (modificada para optimizar la carga de imágenes)
+// Función para crear un elemento de tarjeta de video
 function createVideoCard(videoData) {
     console.log("Creando tarjeta para:", videoData.title);
     const videoContainer = document.createElement("div");
@@ -157,10 +186,21 @@ function createVideoCard(videoData) {
     return videoContainer;
 }
 
-// Funciones showPopup y hidePopup (sin cambios)
-// ... (código existente sin cambios)
+// Función para mostrar el pop-up
+function showPopup() {
+    if (instructionsPopup) {
+        instructionsPopup.style.display = 'block';
+    }
+}
 
-// Función para configurar los botones de género (modificada para resetear la paginación)
+// Función para ocultar el pop-up
+function hidePopup() {
+    if (instructionsPopup) {
+        instructionsPopup.style.display = 'none';
+    }
+}
+
+// Función para configurar los botones de género
 function setupGenreButtons() {
     if (genereButtons) {
         genereButtons.addEventListener('click', (e) => {
@@ -186,7 +226,7 @@ function setupGenreButtons() {
     }
 }
 
-// Configurar event listeners (modificada para incluir el botón "Cargar más")
+// Configurar event listeners
 function setupEventListeners() {
     if (searchButton) {
         searchButton.addEventListener("click", performSearch);
@@ -207,7 +247,7 @@ function setupEventListeners() {
     setupGenreButtons();
 }
 
-// Función para buscar videos (modificada para resetear la paginación)
+// Función para buscar videos
 async function performSearch() {
     if (!searchInput || !videoList) {
         console.error("Elementos de búsqueda no encontrados");
