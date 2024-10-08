@@ -111,7 +111,6 @@ form {
     margin: 2rem auto;
     padding: 1rem;
     background-color: #2a2a2a;
-    border-radius: 10px;
 }
 
 form label {
@@ -232,11 +231,10 @@ footer {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding-top: 2vh; /* Reduced top padding */
+    padding-top: 2vh; /* Padding en la parte superior */
 }
 
 .popup-content {
@@ -245,14 +243,16 @@ footer {
     border: 1px solid #f4c542;
     border-radius: 10px;
     width: 90%;
-    max-width: 600px; /* Reduced max-width */
-    max-height: 90vh; /* Limit height to 90% of viewport height */
+    max-width: 600px; /* Ancho máximo del popup */
+    max-height: 90vh; /* Limitar la altura al 90% de la ventana del navegador */
     color: #ffffff;
-    overflow-y: auto;
+    overflow-y: auto; /* Agregar barra de desplazamiento vertical */
     position: relative;
-    font-size: 0.9em; /* Slightly reduced font size */
+    font-size: 0.9em; /* Tamaño de fuente */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra para un efecto visual */
 }
 
+/* Estilos para el título y el contenido dentro del popup */
 .popup h2 {
     color: #f4c542;
     margin-bottom: 15px;
@@ -264,9 +264,10 @@ footer {
     line-height: 1.4;
 }
 
+/* Botón de aceptación */
 #acceptButton {
     display: block;
-    width: 150px; /* Reduced button width */
+    width: 150px; /* Ancho del botón */
     margin: 20px auto 0;
     padding: 10px 0;
     background-color: #f4c542;
@@ -282,7 +283,7 @@ footer {
     background-color: #e0b532;
 }
 
-/* Media query for mobile devices */
+/* Media query para dispositivos móviles */
 @media (max-width: 768px) {
     .popup {
         padding-top: 1vh;
@@ -303,25 +304,25 @@ footer {
     }
 }
 
-    .search-container {
-        flex-direction: column;
-        margin: 1rem 0;
-    }
+.search-container {
+    flex-direction: column;
+    margin: 1rem 0;
+}
 
-    .search-bar {
-        flex-direction: column;
-        width: auto;
-    }
+.search-bar {
+    flex-direction: column;
+    width: auto;
+}
 
-    form {
-        padding: 0.5rem;
-    }
+form {
+    padding: 0.5rem;
+}
 
-    .movie-list {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.movie-list {
+    grid-template-columns: repeat(2, 1fr);
+}
 
-    .popup-content {
-       width: 80%;
-        margin: 20% auto;
-    }
+.popup-content {
+    width: 80%;
+    margin: 20% auto;
+}
