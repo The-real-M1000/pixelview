@@ -185,8 +185,9 @@ function hidePopup() {
 // Función para configurar los botones de género
 function setupGenreButtons() {
     if (genereButtons) {
-        genereButtons.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
+        const buttons = genereButtons.querySelectorAll('button');
+        buttons.forEach(button => {
+            button.addEventListener('click', (e) => {
                 let selectedGenre = e.target.textContent;
                 console.log("Género seleccionado (original):", selectedGenre);
                 
@@ -199,10 +200,9 @@ function setupGenreButtons() {
                 console.log("Género normalizado:", currentGenere);
                 loadVideos(true);
 
-                const buttons = genereButtons.querySelectorAll('button');
                 buttons.forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
-            }
+            });
         });
     }
 }
