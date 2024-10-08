@@ -59,20 +59,30 @@ function initializeElements() {
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
     
-    loadMoreButton = document.createElement('button');
-    loadMoreButton.textContent = 'Cargar más';
-    loadMoreButton.id = 'loadMoreButton';
-    loadMoreButton.style.display = 'none';
+    // Crear el contenedor de paginación si no existe
+    let paginationContainer = document.getElementById('paginationContainer');
+    if (!paginationContainer) {
+        paginationContainer = document.createElement('div');
+        paginationContainer.id = 'paginationContainer';
+        document.querySelector('.container').appendChild(paginationContainer);
+    }
     
-    pageInfo = document.createElement('div');
-    pageInfo.id = 'pageInfo';
+    // Crear o actualizar el botón "Cargar más"
+    loadMoreButton = document.getElementById('loadMoreButton');
+    if (!loadMoreButton) {
+        loadMoreButton = document.createElement('button');
+        loadMoreButton.id = 'loadMoreButton';
+        loadMoreButton.textContent = 'Cargar más';
+        paginationContainer.appendChild(loadMoreButton);
+    }
     
-    const paginationContainer = document.createElement('div');
-    paginationContainer.id = 'paginationContainer';
-    paginationContainer.appendChild(pageInfo);
-    paginationContainer.appendChild(loadMoreButton);
-    
-    document.body.appendChild(paginationContainer);
+    // Crear o actualizar el elemento de información de página
+    pageInfo = document.getElementById('pageInfo');
+    if (!pageInfo) {
+        pageInfo = document.createElement('div');
+        pageInfo.id = 'pageInfo';
+        paginationContainer.insertBefore(pageInfo, loadMoreButton);
+    }
 
     // Verificar si los elementos existen
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
