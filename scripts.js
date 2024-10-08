@@ -29,11 +29,13 @@ let videoForm;
 let instructionsPopup;
 let acceptButton;
 let loadMoreButton;
+let pageInfo;
 
 // Variables para paginación
 const VIDEOS_PER_PAGE = 25;
 let lastDoc = null;
 let currentGenere = 'all';
+let currentPage = 1;
 
 // Función para normalizar el texto del género
 function normalizeGenre(genre) {
@@ -56,11 +58,21 @@ function initializeElements() {
     videoForm = document.getElementById('videoForm');
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
+    
     loadMoreButton = document.createElement('button');
     loadMoreButton.textContent = 'Cargar más';
     loadMoreButton.id = 'loadMoreButton';
     loadMoreButton.style.display = 'none';
-    document.body.appendChild(loadMoreButton);
+    
+    pageInfo = document.createElement('div');
+    pageInfo.id = 'pageInfo';
+    
+    const paginationContainer = document.createElement('div');
+    paginationContainer.id = 'paginationContainer';
+    paginationContainer.appendChild(pageInfo);
+    paginationContainer.appendChild(loadMoreButton);
+    
+    document.body.appendChild(paginationContainer);
 
     // Verificar si los elementos existen
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
@@ -83,6 +95,7 @@ async function loadVideos(isInitialLoad = true) {
     if (isInitialLoad) {
         videoList.innerHTML = "";
         lastDoc = null;
+        currentPage = 1;
     }
 
     let videosQuery = query(
@@ -106,6 +119,7 @@ async function loadVideos(isInitialLoad = true) {
             console.log("No se encontraron videos para el género:", currentGenere);
             videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenere}.</p>`;
             loadMoreButton.style.display = 'none';
+            pageInfo.textContent = '';
         } else {
             querySnapshot.forEach((doc) => {
                 const videoData = doc.data();
@@ -116,6 +130,7 @@ async function loadVideos(isInitialLoad = true) {
 
             lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
             loadMoreButton.style.display = querySnapshot.size === VIDEOS_PER_PAGE ? 'block' : 'none';
+            updatePageInfo();
         }
     } catch (error) {
         console.error("Error al cargar videos:", error);
@@ -136,6 +151,11 @@ function createVideoCard(videoData) {
         window.open(videoData.videoUrl, '_blank');
     });
     return videoContainer;
+}
+
+// Función para actualizar la información de la página
+function updatePageInfo() {
+    pageInfo.textContent = `Página ${currentPage}`;
 }
 
 // Función para mostrar el pop-up
@@ -193,7 +213,10 @@ function setupEventListeners() {
         acceptButton.addEventListener('click', hidePopup);
     }
     if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', () => loadVideos(false));
+        loadMoreButton.addEventListener('click', () => {
+            currentPage++;
+            loadVideos(false);
+        });
     }
     setupGenreButtons();
 }
@@ -208,6 +231,7 @@ async function performSearch() {
     const searchTerm = searchInput.value.toLowerCase();
     videoList.innerHTML = "";
     lastDoc = null;
+    currentPage = 1;
     loadMoreButton.style.display = 'none';
 
     const videosQuery = query(
@@ -222,6 +246,7 @@ async function performSearch() {
         console.log("Resultados de búsqueda:", querySnapshot.size);
         if (querySnapshot.empty) {
             videoList.innerHTML = "<p>No se encontraron resultados para la búsqueda.</p>";
+            pageInfo.textContent = '';
         } else {
             querySnapshot.forEach((doc) => {
                 const videoData = doc.data();
@@ -231,6 +256,7 @@ async function performSearch() {
 
             lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
             loadMoreButton.style.display = querySnapshot.size === VIDEOS_PER_PAGE ? 'block' : 'none';
+            updatePageInfo();
         }
     } catch (error) {
         console.error("Error al realizar la búsqueda:", error);
