@@ -43,7 +43,7 @@ body {
     margin: 0 10px;
     padding: 8px 16px;
     border: none;
-    border-radius: 25px; /* Bordes redondeados */
+    border-radius: 25px;
     cursor: pointer;
     background-color: #f4c542;
     color: #121212;
@@ -59,36 +59,36 @@ body {
 #search-bar {
     width: 70%;
     padding: 12px 15px;
-    border-radius: 25px; /* Bordes redondeados */
-    border: 1px solid #f4c542; /* Borde del color de marca */
-    background-color: #2b2b2b; /* Fondo del campo de búsqueda */
-    color: #ffffff; /* Texto blanco */
+    border-radius: 25px;
+    border: 1px solid #f4c542;
+    background-color: #2b2b2b;
+    color: #ffffff;
     font-size: 16px;
-    transition: border-color 0.3s; /* Transición suave para el borde */
+    transition: border-color 0.3s;
 }
 
 #search-bar::placeholder {
-    color: #cccccc; /* Color del texto del placeholder */
+    color: #cccccc;
 }
 
 #search-bar:focus {
-    border-color: #f4c542; /* Cambia el color del borde al enfocar */
-    outline: none; /* Quita el contorno por defecto */
+    border-color: #f4c542;
+    outline: none;
 }
 
 #search-button, #upload-button {
     padding: 12px 20px;
-    background-color: #f4c542; /* Color de la marca */
+    background-color: #f4c542;
     border: none;
-    border-radius: 25px; /* Bordes redondeados */
+    border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
-    margin-left: 15px; /* Espaciado a la izquierda */
-    transition: background-color 0.3s ease; /* Transición suave */
+    margin-left: 15px;
+    transition: background-color 0.3s ease;
 }
 
 #search-button:hover, #upload-button:hover {
-    background-color: #e0b838; /* Color más oscuro al pasar el mouse */
+    background-color: #e0b838;
 }
 
 /* Botones de categoría */
@@ -119,7 +119,7 @@ body {
 /* Lista de películas */
 .movie-list {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     margin-top: 20px;
 }
@@ -156,6 +156,37 @@ body {
     font-size: 1.2em;
     padding: 10px;
     font-family: 'Rubik', Arial, sans-serif;
+}
+
+/* Paginación */
+.pagination-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.pagination-button {
+    padding: 12px 24px;
+    font-size: 16px;
+    background-color: #f4c542;
+    color: #121212;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Rubik', Arial, sans-serif;
+}
+
+.pagination-button:hover {
+    background-color: #e0b532;
+}
+
+.page-info {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #ffffff;
 }
 
 /* Pie de página */
