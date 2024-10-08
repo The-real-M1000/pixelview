@@ -1,6 +1,6 @@
 // Importar Firebase y Firestore desde el CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
-import { getFirestore, collection, getDocs, query, where, orderBy, limit, startAfter } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import { getFirestore, collection, setDoc, doc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
 // Configuración de Firebase
 const firebaseConfig = {
@@ -25,23 +25,18 @@ let videoList;
 let genereButtons;
 let searchInput;
 let searchButton;
-let uploadButton;
+let videoForm;
 let instructionsPopup;
 let acceptButton;
-let loadMoreButton;
-let pageInfo;
 
-// Variables para paginación
-const VIDEOS_PER_PAGE = 25;
-let lastDoc = null;
+// Variable para almacenar el filtro de género actual
 let currentGenere = 'all';
-let currentPage = 1;
 
 // Función para normalizar el texto del género
 function normalizeGenre(genre) {
     return genre.toLowerCase()
-                .replace(/\s+/g, '-')
-                .replace(/á/g, 'a')
+                .replace(/\s+/g, '-')  // Reemplaza espacios con guiones
+                .replace(/á/g, 'a')    // Elimina acentos
                 .replace(/é/g, 'e')
                 .replace(/í/g, 'i')
                 .replace(/ó/g, 'o')
@@ -55,83 +50,93 @@ function initializeElements() {
     genereButtons = document.getElementById('genereButtons');
     searchInput = document.getElementById('search-bar');
     searchButton = document.getElementById('search-button');
-    uploadButton = document.getElementById('upload-button');
+    videoForm = document.getElementById('videoForm');
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
-    loadMoreButton = document.getElementById('loadMoreButton');
-    pageInfo = document.getElementById('pageInfo');
 
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
     if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
     if (!searchButton) console.error("Elemento 'searchButton' no encontrado");
-    if (!uploadButton) console.error("Elemento 'uploadButton' no encontrado");
+    if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
     if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
     if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
-    if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
-    if (!pageInfo) console.error("Elemento 'pageInfo' no encontrado");
+}
+
+// Función para subir video
+function setupVideoForm() {
+    if (videoForm) {
+        videoForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const videoTitle = document.getElementById("videoTitle").value;
+            const videoUrl = document.getElementById("videoUrl").value;
+            const imageUrl = document.getElementById("imageUrl").value;
+            const videoType = document.getElementById("videoType").value;
+            const videoGenere = normalizeGenre(document.getElementById("videoGenere").value);
+
+            try {
+                const docId = videoTitle.toLowerCase().replace(/\s+/g, '-');
+                await setDoc(doc(db, "videos", docId), {
+                    title: videoTitle,
+                    videoUrl: videoUrl,
+                    imageUrl: imageUrl,
+                    type: videoType,
+                    genere: videoGenere
+                });
+
+                console.log("Video subido con género:", videoGenere);
+                alert("Video subido correctamente");
+                loadVideos();
+                videoForm.reset();
+            } catch (error) {
+                console.error("Error al subir el video: ", error);
+                alert("Error al subir el video. Por favor, intenta de nuevo.");
+            }
+        });
+    }
 }
 
 // Función para cargar y mostrar videos
-async function loadVideos(isInitialLoad = true) {
-    console.log("Cargando videos...");
+async function loadVideos() {
+    console.log("Cargando videos para el género:", currentGenere);
     if (!videoList) {
         console.error("videoList no está definido");
         return;
     }
+    videoList.innerHTML = "";
 
-    if (isInitialLoad) {
-        videoList.innerHTML = "";
-        lastDoc = null;
-        currentPage = 1;
-    }
-
-    let videosQuery = query(
-        collection(db, "videos"),
-        orderBy("title"),
-        limit(VIDEOS_PER_PAGE)
-    );
-
+    let videosQuery = collection(db, "videos");
     if (currentGenere !== 'all') {
         videosQuery = query(videosQuery, where("genere", "==", currentGenere));
     }
 
-    if (lastDoc) {
-        videosQuery = query(videosQuery, startAfter(lastDoc));
-    }
-
     try {
         const querySnapshot = await getDocs(videosQuery);
-        console.log("Documentos recuperados:", querySnapshot.size);
-        if (querySnapshot.empty && isInitialLoad) {
+        if (querySnapshot.empty) {
             console.log("No se encontraron videos para el género:", currentGenere);
             videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenere}.</p>`;
-            loadMoreButton.style.display = 'none';
-            pageInfo.textContent = '';
         } else {
             querySnapshot.forEach((doc) => {
                 const videoData = doc.data();
-                console.log("Datos del video:", videoData);
+                console.log("Video cargado:", videoData);
                 const videoContainer = createVideoCard(videoData);
                 videoList.appendChild(videoContainer);
             });
-
-            lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-            loadMoreButton.style.display = querySnapshot.size === VIDEOS_PER_PAGE ? 'block' : 'none';
-            updatePageInfo();
         }
     } catch (error) {
         console.error("Error al cargar videos:", error);
-        videoList.innerHTML += "<p>Error al cargar videos. Por favor, intenta de nuevo más tarde.</p>";
+        videoList.innerHTML = "<p>Error al cargar videos. Por favor, intenta de nuevo más tarde.</p>";
     }
 }
 
 // Función para crear un elemento de tarjeta de video
 function createVideoCard(videoData) {
+    console.log("Creando tarjeta para:", videoData.title);
     const videoContainer = document.createElement("div");
     videoContainer.className = 'movie';
     videoContainer.innerHTML = `
-        <img src="${videoData.imageUrl}" alt="${videoData.title}" loading="lazy">
+        <img src="${videoData.imageUrl}" alt="${videoData.title}">
         <div class="title">${videoData.title}</div>
         <div class="info">${videoData.type} - ${videoData.genere}</div>
     `;
@@ -139,11 +144,6 @@ function createVideoCard(videoData) {
         window.open(videoData.videoUrl, '_blank');
     });
     return videoContainer;
-}
-
-// Función para actualizar la información de la página
-function updatePageInfo() {
-    pageInfo.textContent = `Página ${currentPage}`;
 }
 
 // Función para mostrar el pop-up
@@ -175,7 +175,7 @@ function setupGenreButtons() {
                 }
                 
                 console.log("Género normalizado:", currentGenere);
-                loadVideos(true);
+                loadVideos();
 
                 const buttons = genereButtons.querySelectorAll('button');
                 buttons.forEach(btn => btn.classList.remove('active'));
@@ -195,16 +195,11 @@ function setupEventListeners() {
             if (e.key === "Enter") {
                 performSearch();
             }
+        });
     }
     if (acceptButton) {
         acceptButton.addEventListener('click', hidePopup);
     }
-    if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', () => {
-            currentPage++;
-            loadVideos(false);
-        });
-    
     setupGenreButtons();
 }
 
@@ -215,35 +210,25 @@ async function performSearch() {
         return;
     }
 
-    const searchTerm = searchInput.value.toLowerCase();
+    const query = searchInput.value.toLowerCase();
     videoList.innerHTML = "";
-    lastDoc = null;
-    currentPage = 1;
-    loadMoreButton.style.display = 'none';
 
-    const videosQuery = query(
-        collection(db, "videos"),
-        where("title", ">=", searchTerm),
-        where("title", "<=", searchTerm + '\uf8ff'),
-        limit(VIDEOS_PER_PAGE)
-    );
-
+    const videosQuery = collection(db, "videos");
     try {
         const querySnapshot = await getDocs(videosQuery);
-        console.log("Resultados de búsqueda:", querySnapshot.size);
-        if (querySnapshot.empty) {
-            videoList.innerHTML = "<p>No se encontraron resultados para la búsqueda.</p>";
-            pageInfo.textContent = '';
-        } else {
-            querySnapshot.forEach((doc) => {
-                const videoData = doc.data();
+        let resultsFound = false;
+        
+        querySnapshot.forEach((doc) => {
+            const videoData = doc.data();
+            if (videoData.title.toLowerCase().includes(query)) {
                 const videoContainer = createVideoCard(videoData);
                 videoList.appendChild(videoContainer);
-            });
+                resultsFound = true;
+            }
+        });
 
-            lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
-            loadMoreButton.style.display = querySnapshot.size === VIDEOS_PER_PAGE ? 'block' : 'none';
-            updatePageInfo();
+        if (!resultsFound) {
+            videoList.innerHTML = "<p>No se encontraron resultados para la búsqueda.</p>";
         }
     } catch (error) {
         console.error("Error al realizar la búsqueda:", error);
@@ -252,10 +237,11 @@ async function performSearch() {
 }
 
 // Inicialización principal
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', (event) => {
     console.log("DOM completamente cargado y parseado");
     initializeElements();
+    setupVideoForm();
     setupEventListeners();
-    loadVideos(true);
+    loadVideos();
     showPopup();
 });
