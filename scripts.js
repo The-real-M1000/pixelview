@@ -174,6 +174,9 @@ function createVideoCard(videoData) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                    };
                     observer.unobserve(img);
                 }
             });
@@ -181,6 +184,9 @@ function createVideoCard(videoData) {
         observer.observe(img);
     } else {
         img.src = img.dataset.src;
+        img.onload = () => {
+            img.classList.add('loaded');
+        };
     }
 
     return videoContainer;
