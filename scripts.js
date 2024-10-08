@@ -25,7 +25,7 @@ let videoList;
 let genereButtons;
 let searchInput;
 let searchButton;
-let videoForm;
+let uploadButton;
 let instructionsPopup;
 let acceptButton;
 let loadMoreButton;
@@ -55,7 +55,7 @@ function initializeElements() {
     genereButtons = document.getElementById('genereButtons');
     searchInput = document.getElementById('search-bar');
     searchButton = document.getElementById('search-button');
-    videoForm = document.getElementById('videoForm');
+    uploadButton = document.getElementById('upload-button');
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
     loadMoreButton = document.getElementById('loadMoreButton');
@@ -65,7 +65,7 @@ function initializeElements() {
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
     if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
     if (!searchButton) console.error("Elemento 'searchButton' no encontrado");
-    if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
+    if (!uploadButton) console.error("Elemento 'uploadButton' no encontrado");
     if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
     if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
     if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
@@ -204,6 +204,11 @@ function setupEventListeners() {
         loadMoreButton.addEventListener('click', () => {
             currentPage++;
             loadVideos(false);
+        });
+    }
+    if (uploadButton) {
+        uploadButton.addEventListener('click', () => {
+            alert('Funcionalidad de subir película aún no implementada');
         });
     }
     setupGenreButtons();
