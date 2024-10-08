@@ -25,9 +25,8 @@ let videoList;
 let genereButtons;
 let searchInput;
 let searchButton;
-let videoForm;
-let instructionsPopup;
-let acceptButton;
+let uploadButton;
+let paginationContainer;
 let loadMoreButton;
 let pageInfo;
 
@@ -53,14 +52,12 @@ function normalizeGenre(genre) {
 function initializeElements() {
     videoList = document.getElementById('videoList');
     genereButtons = document.getElementById('genereButtons');
-    searchInput = document.getElementById('search-bar');
-    searchButton = document.getElementById('search-button');
-    videoForm = document.getElementById('videoForm');
-    instructionsPopup = document.getElementById('instructionsPopup');
-    acceptButton = document.getElementById('acceptButton');
+    searchInput = document.querySelector('.header input[type="text"]');
+    searchButton = document.querySelector('.header button');
+    uploadButton = document.querySelector('.header button:nth-child(2)');
     
     // Crear el contenedor de paginación si no existe
-    let paginationContainer = document.getElementById('paginationContainer');
+    paginationContainer = document.getElementById('paginationContainer');
     if (!paginationContainer) {
         paginationContainer = document.createElement('div');
         paginationContainer.id = 'paginationContainer';
@@ -87,11 +84,9 @@ function initializeElements() {
     // Verificar si los elementos existen
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
-    if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
-    if (!searchButton) console.error("Elemento 'searchButton' no encontrado");
-    if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
-    if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
-    if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
+    if (!searchInput) console.error("Elemento de búsqueda no encontrado");
+    if (!searchButton) console.error("Botón de búsqueda no encontrado");
+    if (!uploadButton) console.error("Botón de subida no encontrado");
 }
 
 // Función para cargar y mostrar videos
@@ -168,20 +163,6 @@ function updatePageInfo() {
     pageInfo.textContent = `Página ${currentPage}`;
 }
 
-// Función para mostrar el pop-up
-function showPopup() {
-    if (instructionsPopup) {
-        instructionsPopup.style.display = 'block';
-    }
-}
-
-// Función para ocultar el pop-up
-function hidePopup() {
-    if (instructionsPopup) {
-        instructionsPopup.style.display = 'none';
-    }
-}
-
 // Función para configurar los botones de género
 function setupGenreButtons() {
     if (genereButtons) {
@@ -218,9 +199,6 @@ function setupEventListeners() {
                 performSearch();
             }
         });
-    }
-    if (acceptButton) {
-        acceptButton.addEventListener('click', hidePopup);
     }
     if (loadMoreButton) {
         loadMoreButton.addEventListener('click', () => {
@@ -280,5 +258,4 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeElements();
     setupEventListeners();
     loadVideos(true);
-    showPopup();
 });
