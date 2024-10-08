@@ -195,7 +195,6 @@ function setupEventListeners() {
             if (e.key === "Enter") {
                 performSearch();
             }
-        });
     }
     if (acceptButton) {
         acceptButton.addEventListener('click', hidePopup);
