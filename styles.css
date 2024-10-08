@@ -158,37 +158,6 @@ body {
     font-family: 'Rubik', Arial, sans-serif;
 }
 
-/* Paginación */
-.pagination-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-.pagination-button {
-    padding: 12px 24px;
-    font-size: 16px;
-    background-color: #f4c542;
-    color: #121212;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-family: 'Rubik', Arial, sans-serif;
-}
-
-.pagination-button:hover {
-    background-color: #e0b532;
-}
-
-.page-info {
-    margin-bottom: 15px;
-    font-size: 16px;
-    color: #ffffff;
-}
-
 /* Pie de página */
 footer {
     background-color: #1e1e1e;
@@ -196,4 +165,36 @@ footer {
     text-align: center;
     padding: 10px 0;
     margin-top: 20px;
+}
+
+/* Estilos para el botón "Cargar más" y el texto de la página */
+#paginationContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#loadMoreButton {
+    padding: 12px 24px;
+    background-color: #f4c542;
+    color: #121212;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Rubik', Arial, sans-serif;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+#loadMoreButton:hover {
+    background-color: #e0b838;
+}
+
+#pageInfo {
+    font-size: 14px;
+    color: #cccccc;
+    margin-top: 10px;
+    font-family: 'Rubik', Arial, sans-serif;
 }
