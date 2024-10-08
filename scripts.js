@@ -58,33 +58,9 @@ function initializeElements() {
     videoForm = document.getElementById('videoForm');
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
-    
-    // Crear el contenedor de paginación si no existe
-    let paginationContainer = document.getElementById('paginationContainer');
-    if (!paginationContainer) {
-        paginationContainer = document.createElement('div');
-        paginationContainer.id = 'paginationContainer';
-        document.querySelector('.container').appendChild(paginationContainer);
-    }
-    
-    // Crear o actualizar el botón "Cargar más"
     loadMoreButton = document.getElementById('loadMoreButton');
-    if (!loadMoreButton) {
-        loadMoreButton = document.createElement('button');
-        loadMoreButton.id = 'loadMoreButton';
-        loadMoreButton.textContent = 'Cargar más';
-        paginationContainer.appendChild(loadMoreButton);
-    }
-    
-    // Crear o actualizar el elemento de información de página
     pageInfo = document.getElementById('pageInfo');
-    if (!pageInfo) {
-        pageInfo = document.createElement('div');
-        pageInfo.id = 'pageInfo';
-        paginationContainer.insertBefore(pageInfo, loadMoreButton);
-    }
 
-    // Verificar si los elementos existen
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
     if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
@@ -92,6 +68,8 @@ function initializeElements() {
     if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
     if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
     if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
+    if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
+    if (!pageInfo) console.error("Elemento 'pageInfo' no encontrado");
 }
 
 // Función para cargar y mostrar videos
