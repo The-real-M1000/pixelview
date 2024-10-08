@@ -111,7 +111,8 @@ async function loadVideos() {
     if (currentGenere !== 'all') {
         videosQuery = query(videosQuery, where("genere", "==", currentGenere));
     }
-    videosQuery = query(videosQuery, orderBy("timestamp", "desc"));
+    // Removemos el ordenamiento por timestamp para asegurar que todos los videos se carguen
+    // videosQuery = query(videosQuery, orderBy("timestamp", "desc"));
 
     try {
         const querySnapshot = await getDocs(videosQuery);
@@ -119,8 +120,25 @@ async function loadVideos() {
             console.log("No se encontraron videos para el género:", currentGenere);
             videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenere}.</p>`;
         } else {
+            const videos = [];
             querySnapshot.forEach((doc) => {
                 const videoData = doc.data();
+                videos.push(videoData);
+            });
+            
+            // Ordenar los videos manualmente, poniendo los que tienen timestamp primero
+            videos.sort((a, b) => {
+                if (a.timestamp && b.timestamp) {
+                    return b.timestamp.seconds - a.timestamp.seconds;
+                } else if (a.timestamp) {
+                    return -1; // a viene primero
+                } else if (b.timestamp) {
+                    return 1; // b viene primero
+                }
+                return 0; // mantener el orden original si no hay timestamps
+            });
+
+            videos.forEach((videoData) => {
                 console.log("Video cargado:", videoData);
                 const videoContainer = createVideoCard(videoData);
                 videoList.appendChild(videoContainer);
