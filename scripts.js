@@ -34,7 +34,7 @@ let sortByDateButton;
 
 // Variables para la paginación y ordenación
 let lastVisible = null;
-const pageSize = 25;
+const pageSize = 20; // Cambiado de 25 a 20
 let currentGenre = 'all';
 let currentSortMethod = 'date'; // Por defecto, ordenar por fecha
 
