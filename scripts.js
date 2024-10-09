@@ -29,13 +29,14 @@ let videoForm;
 let instructionsPopup;
 let acceptButton;
 let loadMoreButton;
+let sortAlphabeticallyButton;
+let sortByDateButton;
 
-// Variables para la paginación
+// Variables para la paginación y ordenación
 let lastVisible = null;
-const pageSize = 20; // Cambiado de 25 a 20
-
-// Variable para almacenar el filtro de género actual
-let currentGenere = 'all';
+const pageSize = 25;
+let currentGenre = 'all';
+let currentSortMethod = 'date'; // Por defecto, ordenar por fecha
 
 // Función para normalizar el texto del género
 function normalizeGenre(genre) {
@@ -59,6 +60,8 @@ function initializeElements() {
     instructionsPopup = document.getElementById('instructionsPopup');
     acceptButton = document.getElementById('acceptButton');
     loadMoreButton = document.getElementById('loadMoreButton');
+    sortAlphabeticallyButton = document.getElementById('sortAlphabetically');
+    sortByDateButton = document.getElementById('sortByDate');
 
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
@@ -68,6 +71,8 @@ function initializeElements() {
     if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
     if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
     if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
+    if (!sortAlphabeticallyButton) console.error("Elemento 'sortAlphabetically' no encontrado");
+    if (!sortByDateButton) console.error("Elemento 'sortByDate' no encontrado");
 }
 
 // Función para subir video
@@ -89,7 +94,8 @@ function setupVideoForm() {
                     videoUrl: videoUrl,
                     imageUrl: imageUrl,
                     type: videoType,
-                    genere: videoGenere
+                    genere: videoGenere,
+                    uploadDate: new Date().toISOString()
                 });
 
                 console.log("Video subido con género:", videoGenere);
@@ -106,7 +112,7 @@ function setupVideoForm() {
 
 // Función para cargar y mostrar videos
 async function loadVideos(isLoadMore = false) {
-    console.log("Cargando videos para el género:", currentGenere);
+    console.log("Cargando videos para el género:", currentGenre);
     if (!videoList) {
         console.error("videoList no está definido");
         return;
@@ -118,10 +124,18 @@ async function loadVideos(isLoadMore = false) {
     }
 
     let videosQuery = collection(db, "videos");
-    if (currentGenere !== 'all') {
-        videosQuery = query(videosQuery, where("genere", "==", currentGenere));
+    if (currentGenre !== 'all') {
+        videosQuery = query(videosQuery, where("genere", "==", currentGenre));
     }
-    videosQuery = query(videosQuery, orderBy("title"), limit(pageSize));
+
+    // Aplicar ordenación
+    if (currentSortMethod === 'alphabetical') {
+        videosQuery = query(videosQuery, orderBy("title"));
+    } else {
+        videosQuery = query(videosQuery, orderBy("uploadDate", "desc"));
+    }
+
+    videosQuery = query(videosQuery, limit(pageSize));
 
     if (lastVisible) {
         videosQuery = query(videosQuery, startAfter(lastVisible));
@@ -132,7 +146,7 @@ async function loadVideos(isLoadMore = false) {
         if (querySnapshot.empty) {
             console.log("No se encontraron más videos");
             if (!isLoadMore) {
-                videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenere}.</p>`;
+                videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenre}.</p>`;
             }
             loadMoreButton.style.display = 'none';
         } else {
@@ -206,8 +220,8 @@ function hidePopup() {
     }
 }
 
-// Función para configurar los botones de género
-function setupGenreButtons() {
+// Función para configurar los botones de género y ordenación
+function setupGenreAndSortButtons() {
     if (genereButtons) {
         genereButtons.addEventListener('click', (e) => {
             if (e.target.tagName === 'BUTTON') {
@@ -215,20 +229,42 @@ function setupGenreButtons() {
                 console.log("Género seleccionado (original):", selectedGenre);
                 
                 if (selectedGenre.toLowerCase() === 'todos') {
-                    currentGenere = 'all';
+                    currentGenre = 'all';
                 } else {
-                    currentGenere = normalizeGenre(selectedGenre);
+                    currentGenre = normalizeGenre(selectedGenre);
                 }
                 
-                console.log("Género normalizado:", currentGenere);
+                console.log("Género normalizado:", currentGenre);
                 lastVisible = null; // Resetear la paginación
                 loadVideos();
 
-                const buttons = genereButtons.querySelectorAll('button');
+                const buttons = genereButtons.querySelectorAll('button:not(.sort-buttons button)');
                 buttons.forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
             }
         });
+    }
+
+    if (sortAlphabeticallyButton && sortByDateButton) {
+        sortAlphabeticallyButton.addEventListener('click', () => {
+            currentSortMethod = 'alphabetical';
+            updateSortButtons();
+            loadVideos();
+        });
+
+        sortByDateButton.addEventListener('click', () => {
+            currentSortMethod = 'date';
+            updateSortButtons();
+            loadVideos();
+        });
+    }
+}
+
+// Función para actualizar la apariencia de los botones de ordenación
+function updateSortButtons() {
+    if (sortAlphabeticallyButton && sortByDateButton) {
+        sortAlphabeticallyButton.classList.toggle('active', currentSortMethod === 'alphabetical');
+        sortByDateButton.classList.toggle('active', currentSortMethod === 'date');
     }
 }
 
@@ -250,7 +286,7 @@ function setupEventListeners() {
     if (loadMoreButton) {
         loadMoreButton.addEventListener('click', () => loadVideos(true));
     }
-    setupGenreButtons();
+    setupGenreAndSortButtons();
 }
 
 // Función para buscar videos
