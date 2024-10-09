@@ -3,23 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social Media Buttons</title>
+    <title>PixelView: Películas y series gratis</title>
+    <link rel="icon" href="favicon.ico">
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
     <style>
-        .main {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5em;
+    /* Estilos generales */
+    body {
+        margin: 0;
+       height: 100%;
+        font-family: 'Rubik', Arial, sans-serif;
+        background-color: #121212;
+        color: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        animation: gradientBG 15s ease infinite;
+        background-size: 400% 400%;
+        background-image: linear-gradient(-45deg, #121212, #1a1a1a, #222222, #1a1a1a);
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        flex: 1;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Encabezado */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 0;
+        flex-wrap: wrap;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(to right, #f4c542, #e0b532, #f4c542);
+        animation: shimmer 2s infinite linear;
+    }
+
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 2.5em;
+        color: #f4c542;
+        cursor: pointer;
+        font-family: 'Pixelify Sans', Arial, sans-serif;
+        text-shadow: 0 0 10px rgba(244, 197, 66, 0.5);
+        transition: all 0.3s ease;
+    }
+
+    .header h1:hover {
+        transform: scale(1.05);
+        text-shadow: 0 0 20px rgba(244, 197, 66, 0.8);
+    }
+
+    /* Botones */
+    .buttons {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .buttons button {
+        margin: 5px;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        background-color: #f4c542;
+        color: #121212;
+        transition: all 0.3s ease;
+        font-family: 'Rubik', Arial, sans-serif;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .buttons button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: all 0.5s;
+    }
+
+    .buttons button:hover::before {
+        left: 100%;
+    }
+
+    .buttons button:hover {
+        background-color: #e0b532;
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Media queries para responsividad */
+    @media (max-width: 768px) {
+        .header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .header h1 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .buttons {
             justify-content: center;
+        }
+    }
+
+    /* Mejoras de rendimiento */
+    @media (prefers-reduced-motion: reduce) {
+        body {
+            animation: none;
+        }
+        .buttons button::before {
+            display: none;
+        }
+    }
+
+    /* Estilo para el scrollbar personalizado */
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #2b2b2b;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #f4c542;
+        border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #e0b532;
+    }
+.main {
+            display: grid;
+            grid-template-columns: repeat(2, 90px);
+            justify-content: center; /* Centra horizontalmente */
+            align-items: center;
+            grid-template-rows: repeat(2, 90px);
+            gap: 0.5em;
         }
         .card {
             width: 90px;
             height: 90px;
             outline: none;
             border: none;
-            background: white;
+            background: #f4c542;
             box-shadow:
-                rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
-                rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+                rgba(244, 197, 66, 0.25) 0px 2px 5px -1px,
+                rgba(244, 197, 66, 0.3) 0px 1px 3px -1px;
             transition: 0.2s ease-in-out;
             display: flex;
             justify-content: center;
@@ -42,35 +207,46 @@
             width: 50px;
             height: 50px;
             transition: 0.2s ease-in-out;
+            fill: #121212;
         }
-        .whatsapp { fill: #25D366; }
-        .github { fill: #333; }
-        .email { fill: #EA4335; }
-        .telegram { fill: #0088cc; }
     </style>
 </head>
 <body>
+    <div class="container">
+        <div class="header">
+            <h1 onclick="window.location.href='index.html'">PixelView</h1>
+            <div class="buttons">
+                <button onclick="window.location.href='index.html'">Inicio</button>
+                <button onclick="window.open('https://www.paypal.me/jatmilop', '_blank')">Donar</button>
+                <button onclick="window.open('https://forms.gle/NpyBVnuuHQ9iNPcT8', '_blank')">Reportar un Error</button>
+                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
+                <button onclick="window.location.href='contacto.html'">Contactanos</button>
+            </div>
+        </div>
     <div class="main">
         <button class="card card1">
-            <svg class="whatsapp" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
             </svg>
         </button>
         <button class="card card2">
-            <svg class="github" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
             </svg>
         </button>
         <button class="card card3">
-            <svg class="email" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
             </svg>
         </button>
         <button class="card card4">
-            <svg class="telegram" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
             </svg>
         </button>
+    </div>
+
+        <!-- Aquí iría el resto del contenido de la página -->
     </div>
 </body>
 </html>
