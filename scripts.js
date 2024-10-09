@@ -32,7 +32,7 @@ let loadMoreButton;
 
 // Variables para la paginación
 let lastVisible = null;
-const pageSize = 25;
+const pageSize = 20; // Cambiado de 25 a 20
 
 // Variable para almacenar el filtro de género actual
 let currentGenere = 'all';
