@@ -112,7 +112,7 @@ function setupVideoForm() {
 
 // Función para cargar y mostrar videos
 async function loadVideos(isLoadMore = false) {
-    console.log("Cargando videos para el género:", currentGenre);
+    console.log("Cargando videos para el género:", currentGenre, "Orden:", currentSortMethod);
     if (!videoList) {
         console.error("videoList no está definido");
         return;
@@ -249,12 +249,14 @@ function setupGenreAndSortButtons() {
         sortAlphabeticallyButton.addEventListener('click', () => {
             currentSortMethod = 'alphabetical';
             updateSortButtons();
+            lastVisible = null; // Resetear la paginación
             loadVideos();
         });
 
         sortByDateButton.addEventListener('click', () => {
             currentSortMethod = 'date';
             updateSortButtons();
+            lastVisible = null; // Resetear la paginación
             loadVideos();
         });
     }
@@ -330,6 +332,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     initializeElements();
     setupVideoForm();
     setupEventListeners();
+    updateSortButtons(); // Actualizar los botones de ordenación al inicio
     loadVideos();
     showPopup();
 });
