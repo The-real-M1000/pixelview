@@ -239,9 +239,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px; /* Tamaño de fuente fijo */
-    width: 80px; /* Ancho fijo */
-    height: 36px; /* Altura fija */
+    font-size: 14px;
+    width: 80px;
+    height: 36px;
 }
 
 .sort-buttons button:first-child {
@@ -261,48 +261,6 @@ body {
 .sort-buttons button:hover {
     background-color: #f4c542;
     color: #121212;
-}
-
-/* Iconos para los botones de ordenación */
-.sort-buttons button::after {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
-    margin-left: 5px;
-}
-
-.sort-buttons button:first-child::after {
-    content: '\f15d'; /* Ícono de ordenación alfabética (A-Z) */
-}
-
-.sort-buttons button:last-child::after {
-    content: '\f309'; /* Ícono de ordenación por fecha (más reciente primero) */
-}
-
-/* Tooltips para los botones de ordenación */
-.sort-buttons button {
-    position: relative;
-}
-
-.sort-buttons button::before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 5px 10px;
-    background-color: #333;
-    color: #fff;
-    border-radius: 4px;
-    font-size: 12px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s, visibility 0.3s;
-}
-
-.sort-buttons button:hover::before {
-    opacity: 1;
-    visibility: visible;
 }
 
 /* Lista de películas */
