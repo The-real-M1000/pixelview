@@ -289,11 +289,7 @@ footer {
     }
 }
 
-@media (max-width: 480px) {
-    .movie-list {
-        grid-template-columns: 1fr;
-    }
-}
+/* Eliminamos el media query para 480px y mantenemos siempre 2 columnas como mínimo */
 
 /* Mejoras de rendimiento */
 @media (prefers-reduced-motion: reduce) {
