@@ -26,17 +26,15 @@ let genereButtons;
 let searchInput;
 let searchButton;
 let videoForm;
-let instructionsPopup;
-let acceptButton;
 let loadMoreButton;
 let sortAlphabeticallyButton;
 let sortByDateButton;
 
 // Variables para la paginación y ordenación
 let lastVisible = null;
-const pageSize = 20; // Cambiado de 25 a 20
+const pageSize = 20;
 let currentGenre = 'all';
-let currentSortMethod = 'date'; // Por defecto, ordenar por fecha
+let currentSortMethod = 'date';
 
 // Función para normalizar el texto del género
 function normalizeGenre(genre) {
@@ -57,8 +55,6 @@ function initializeElements() {
     searchInput = document.getElementById('search-bar');
     searchButton = document.getElementById('search-button');
     videoForm = document.getElementById('videoForm');
-    instructionsPopup = document.getElementById('instructionsPopup');
-    acceptButton = document.getElementById('acceptButton');
     loadMoreButton = document.getElementById('loadMoreButton');
     sortAlphabeticallyButton = document.getElementById('sortAlphabetically');
     sortByDateButton = document.getElementById('sortByDate');
@@ -68,8 +64,6 @@ function initializeElements() {
     if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
     if (!searchButton) console.error("Elemento 'searchButton' no encontrado");
     if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
-    if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
-    if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
     if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
     if (!sortAlphabeticallyButton) console.error("Elemento 'sortAlphabetically' no encontrado");
     if (!sortByDateButton) console.error("Elemento 'sortByDate' no encontrado");
@@ -125,12 +119,10 @@ async function loadVideos(isLoadMore = false) {
 
     let videosQuery = collection(db, "videos");
 
-    // Aplicar filtro por género si no es 'all'
     if (currentGenre !== 'all') {
         videosQuery = query(videosQuery, where("genere", "==", currentGenre));
     }
 
-    // Aplicar ordenación
     if (currentSortMethod === 'alphabetical') {
         videosQuery = query(videosQuery, orderBy("title"));
     } else {
@@ -206,20 +198,6 @@ function createVideoCard(videoData) {
     }
 
     return videoContainer;
-}
-
-// Función para mostrar el pop-up
-function showPopup() {
-    if (instructionsPopup) {
-        instructionsPopup.style.display = 'block';
-    }
-}
-
-// Función para ocultar el pop-up
-function hidePopup() {
-    if (instructionsPopup) {
-        instructionsPopup.style.display = 'none';
-    }
 }
 
 // Función para configurar los botones de género y ordenación
