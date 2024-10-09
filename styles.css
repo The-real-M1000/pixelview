@@ -222,6 +222,7 @@ body {
 }
 
 /* Botones de ordenación */
+/* Botones de ordenación */
 .sort-buttons {
     display: flex;
     margin-right: 10px;
@@ -234,14 +235,8 @@ body {
     color: #f4c542;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-family: 'Rubik', Arial, sans-serif;
     font-size: 14px;
-    width: 80px;
-    height: 36px;
 }
 
 .sort-buttons button:first-child {
@@ -262,7 +257,6 @@ body {
     background-color: #f4c542;
     color: #121212;
 }
-
 /* Lista de películas */
 .movie-list {
     display: grid;
