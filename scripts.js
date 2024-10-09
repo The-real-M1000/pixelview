@@ -56,8 +56,8 @@ function initializeElements() {
     searchButton = document.getElementById('search-button');
     videoForm = document.getElementById('videoForm');
     loadMoreButton = document.getElementById('loadMoreButton');
-    sortAlphabeticallyButton = document.getElementById('sortAlphabetically');
-    sortByDateButton = document.getElementById('sortByDate');
+    sortAlphabeticallyButton = document.querySelector('.sort-buttons button:first-child');
+    sortByDateButton = document.querySelector('.sort-buttons button:last-child');
 
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
@@ -168,7 +168,7 @@ function createVideoCard(videoData) {
         <div class="image-container">
             <img src="placeholder.jpg" data-src="${videoData.imageUrl}" alt="${videoData.title}" loading="lazy">
         </div>
-        <div class="title">${videoData.title}</div>
+        <h2 class="title">${videoData.title}</h2>
         <div class="info">${videoData.type} - ${videoData.genere}</div>
     `;
     videoContainer.addEventListener('click', () => {
@@ -262,9 +262,6 @@ function setupEventListeners() {
             }
         });
     }
-    if (acceptButton) {
-        acceptButton.addEventListener('click', hidePopup);
-    }
     if (loadMoreButton) {
         loadMoreButton.addEventListener('click', () => loadVideos(true));
     }
@@ -306,7 +303,10 @@ async function performSearch() {
         console.error("Error al realizar la búsqueda:", error);
         videoList.innerHTML = "<p>Error al realizar la búsqueda. Por favor, intenta de nuevo más tarde.</p>";
     }
-    function createRipple(event) {
+}
+
+// Función para crear el efecto ripple en los botones
+function createRipple(event) {
     const button = event.currentTarget;
     const circle = document.createElement("span");
     const diameter = Math.max(button.clientWidth, button.clientHeight);
@@ -325,12 +325,6 @@ async function performSearch() {
     button.appendChild(circle);
 }
 
-const buttons = document.getElementsByTagName("button");
-for (const button of buttons) {
-    button.addEventListener("click", createRipple);
-}
-}
-
 // Inicialización principal
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log("DOM completamente cargado y parseado");
@@ -339,5 +333,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setupEventListeners();
     updateSortButtons(); // Actualizar los botones de ordenación al inicio
     loadVideos();
-    showPopup();
+
+    // Añadir efecto ripple a todos los botones
+    const buttons = document.getElementsByTagName("button");
+    for (const button of buttons) {
+        button.addEventListener("click", createRipple);
+    }
 });
