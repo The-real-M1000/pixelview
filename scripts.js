@@ -112,7 +112,7 @@ function setupVideoForm() {
 
 // Función para cargar y mostrar videos
 async function loadVideos(isLoadMore = false) {
-    console.log("Cargando videos para el género:", currentGenre, "Orden:", currentSortMethod);
+    console.log("Cargando videos - Género:", currentGenre, "Orden:", currentSortMethod);
     if (!videoList) {
         console.error("videoList no está definido");
         return;
@@ -146,7 +146,7 @@ async function loadVideos(isLoadMore = false) {
     try {
         const querySnapshot = await getDocs(videosQuery);
         if (querySnapshot.empty) {
-            console.log("No se encontraron más videos");
+            console.log("No se encontraron videos");
             if (!isLoadMore) {
                 videoList.innerHTML = `<p>No se encontraron videos para el género: ${currentGenre}.</p>`;
             }
@@ -225,9 +225,10 @@ function hidePopup() {
 // Función para configurar los botones de género y ordenación
 function setupGenreAndSortButtons() {
     if (genereButtons) {
-        genereButtons.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON' && !e.target.classList.contains('sort-button')) {
-                let selectedGenre = e.target.textContent;
+        const genreButtons = genereButtons.querySelectorAll('button:not(.sort-buttons button)');
+        genreButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                let selectedGenre = button.textContent;
                 console.log("Género seleccionado (original):", selectedGenre);
                 
                 if (selectedGenre.toLowerCase() === 'todos') {
@@ -240,10 +241,9 @@ function setupGenreAndSortButtons() {
                 lastVisible = null; // Resetear la paginación
                 loadVideos();
 
-                const buttons = genereButtons.querySelectorAll('button:not(.sort-button)');
-                buttons.forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-            }
+                genreButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+            });
         });
     }
 
