@@ -239,6 +239,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 14px; /* Tamaño de fuente fijo */
+    width: 80px; /* Ancho fijo */
+    height: 36px; /* Altura fija */
 }
 
 .sort-buttons button:first-child {
