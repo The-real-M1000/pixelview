@@ -200,6 +200,32 @@ function createVideoCard(videoData) {
     return videoContainer;
 }
 
+// Función para actualizar la apariencia de los botones de ordenación
+function updateSortButtons() {
+    if (sortAlphabeticallyButton && sortByDateButton) {
+        sortAlphabeticallyButton.classList.toggle('active', currentSortMethod === 'alphabetical');
+        sortByDateButton.classList.toggle('active', currentSortMethod === 'date');
+    }
+}
+
+// Configurar event listeners
+function setupEventListeners() {
+    if (searchButton) {
+        searchButton.addEventListener("click", performSearch);
+    }
+    if (searchInput) {
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                performSearch();
+            }
+        });
+    }
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', () => loadVideos(true));
+    }
+    setupGenreAndSortButtons();
+}
+
 // Función para configurar los botones de género y ordenación
 function setupGenreAndSortButtons() {
     if (genereButtons) {
@@ -240,32 +266,6 @@ function setupGenreAndSortButtons() {
             loadVideos();
         });
     }
-}
-
-// Función para actualizar la apariencia de los botones de ordenación
-function updateSortButtons() {
-    if (sortAlphabeticallyButton && sortByDateButton) {
-        sortAlphabeticallyButton.classList.toggle('active', currentSortMethod === 'alphabetical');
-        sortByDateButton.classList.toggle('active', currentSortMethod === 'date');
-    }
-}
-
-// Configurar event listeners
-function setupEventListeners() {
-    if (searchButton) {
-        searchButton.addEventListener("click", performSearch);
-    }
-    if (searchInput) {
-        searchInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                performSearch();
-            }
-        });
-    }
-    if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', () => loadVideos(true));
-    }
-    setupGenreAndSortButtons();
 }
 
 // Función para buscar videos
