@@ -87,6 +87,18 @@
 
 
   <script type="module" src="scripts.js"></script>
+  <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const popup = document.getElementById('instructionsPopup');
+    const acceptButton = document.getElementById('acceptButton');
+
+    if (acceptButton) {
+        acceptButton.addEventListener('click', function() {
+            popup.style.display = 'none';
+        });
+    }
+});
+</script>
 </body>
 
 </html>
