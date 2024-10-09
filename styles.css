@@ -382,9 +382,9 @@ footer::before {
     display: flex;
     justify-content: center;
     margin-top: 30px;
-/* ... (estilos anteriores) ... */
+}
 
-.load-more-button {
+.load-more-container button {
     padding: 15px 30px;
     font-size: 18px;
     background-color: #f4c542;
@@ -399,7 +399,7 @@ footer::before {
     overflow: hidden;
 }
 
-.load-more-button::before {
+.load-more-container button::before {
     content: '';
     position: absolute;
     top: 0;
@@ -410,20 +410,21 @@ footer::before {
     transition: all 0.5s;
 }
 
-.load-more-button:hover::before {
+.load-more-container button:hover::before {
     left: 100%;
 }
 
-.load-more-button:hover {
+.load-more-container button:hover {
     background-color: #e0b532;
     transform: translateY(-3px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
-.load-more-button:active {
+.load-more-container button:active {
     transform: translateY(-1px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 /* Optimización para la carga de imágenes */
 .image-container {
