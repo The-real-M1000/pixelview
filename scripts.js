@@ -124,6 +124,8 @@ async function loadVideos(isLoadMore = false) {
     }
 
     let videosQuery = collection(db, "videos");
+
+    // Aplicar filtro por género si no es 'all'
     if (currentGenre !== 'all') {
         videosQuery = query(videosQuery, where("genere", "==", currentGenre));
     }
@@ -224,7 +226,7 @@ function hidePopup() {
 function setupGenreAndSortButtons() {
     if (genereButtons) {
         genereButtons.addEventListener('click', (e) => {
-            if (e.target.tagName === 'BUTTON') {
+            if (e.target.tagName === 'BUTTON' && !e.target.classList.contains('sort-button')) {
                 let selectedGenre = e.target.textContent;
                 console.log("Género seleccionado (original):", selectedGenre);
                 
@@ -238,7 +240,7 @@ function setupGenreAndSortButtons() {
                 lastVisible = null; // Resetear la paginación
                 loadVideos();
 
-                const buttons = genereButtons.querySelectorAll('button:not(.sort-buttons button)');
+                const buttons = genereButtons.querySelectorAll('button:not(.sort-button)');
                 buttons.forEach(btn => btn.classList.remove('active'));
                 e.target.classList.add('active');
             }
@@ -298,18 +300,20 @@ async function performSearch() {
         return;
     }
 
-    const query = searchInput.value.toLowerCase();
+    const searchQuery = searchInput.value.toLowerCase();
     videoList.innerHTML = "";
     lastVisible = null; // Resetear la paginación
 
-    const videosQuery = collection(db, "videos");
+    let videosQuery = collection(db, "videos");
+    videosQuery = query(videosQuery, orderBy("title"));
+
     try {
         const querySnapshot = await getDocs(videosQuery);
         let resultsFound = false;
         
         querySnapshot.forEach((doc) => {
             const videoData = doc.data();
-            if (videoData.title.toLowerCase().includes(query)) {
+            if (videoData.title.toLowerCase().includes(searchQuery)) {
                 const videoContainer = createVideoCard(videoData);
                 videoList.appendChild(videoContainer);
                 resultsFound = true;
