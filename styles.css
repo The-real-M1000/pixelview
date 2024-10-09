@@ -128,6 +128,40 @@ body {
     color: #121212;
 }
 
+/* Nuevos estilos para los botones de ordenación */
+.sort-buttons {
+    display: flex;
+    margin-left: 10px;
+}
+
+.sort-buttons button {
+    padding: 8px 12px;
+    border: 1px solid #f4c542;
+    background: none;
+    color: #f4c542;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.sort-buttons button:first-child {
+    border-radius: 5px 0 0 5px;
+    border-right: none;
+}
+
+.sort-buttons button:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.sort-buttons button.active {
+    background-color: #f4c542;
+    color: #121212;
+}
+
+.sort-buttons button:hover {
+    background-color: #f4c542;
+    color: #121212;
+}
+
 /* Lista de películas */
 .movie-list {
     display: grid;
@@ -289,7 +323,11 @@ footer {
     }
 }
 
-/* Eliminamos el media query para 480px y mantenemos siempre 2 columnas como mínimo */
+@media (max-width: 480px) {
+    .movie-list {
+        grid-template-columns: 1fr;
+    }
+}
 
 /* Mejoras de rendimiento */
 @media (prefers-reduced-motion: reduce) {
