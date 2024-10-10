@@ -35,6 +35,7 @@ let lastVisible = null;
 const pageSize = 20;
 let currentGenre = 'all';
 let currentSortMethod = 'date';
+let currentPage = 1;
 
 // Función para normalizar el texto del género
 function normalizeGenre(genre) {
@@ -69,11 +70,40 @@ function initializeElements() {
     if (!sortByDateButton) console.error("Elemento 'sortByDate' no encontrado");
 }
 
+// Función para validar el formulario
+function validateForm() {
+    const title = document.getElementById("videoTitle").value;
+    const url = document.getElementById("videoUrl").value;
+    const imageUrl = document.getElementById("imageUrl").value;
+    
+    if (!title || !url || !imageUrl) {
+        alert("Por favor, rellena todos los campos");
+        return false;
+    }
+    
+    if (!isValidUrl(url) || !isValidUrl(imageUrl)) {
+        alert("Por favor, introduce URLs válidas");
+        return false;
+    }
+    
+    return true;
+}
+
+function isValidUrl(string) {
+    try {
+        new URL(string);
+        return true;
+    } catch (_) {
+        return false;  
+    }
+}
+
 // Función para subir video
 function setupVideoForm() {
     if (videoForm) {
         videoForm.addEventListener("submit", async (e) => {
             e.preventDefault();
+            if (!validateForm()) return;
 
             const videoTitle = document.getElementById("videoTitle").value;
             const videoUrl = document.getElementById("videoUrl").value;
@@ -115,27 +145,28 @@ async function loadVideos(isLoadMore = false) {
     if (!isLoadMore) {
         videoList.innerHTML = "";
         lastVisible = null;
-    }
-
-    let videosQuery = collection(db, "videos");
-
-    if (currentGenre !== 'all') {
-        videosQuery = query(videosQuery, where("genere", "==", currentGenre));
-    }
-
-    if (currentSortMethod === 'alphabetical') {
-        videosQuery = query(videosQuery, orderBy("title"));
-    } else {
-        videosQuery = query(videosQuery, orderBy("uploadDate", "desc"));
-    }
-
-    videosQuery = query(videosQuery, limit(pageSize));
-
-    if (lastVisible) {
-        videosQuery = query(videosQuery, startAfter(lastVisible));
+        currentPage = 1;
     }
 
     try {
+        let videosQuery = collection(db, "videos");
+
+        if (currentGenre !== 'all') {
+            videosQuery = query(videosQuery, where("genere", "==", currentGenre));
+        }
+
+        if (currentSortMethod === 'alphabetical') {
+            videosQuery = query(videosQuery, orderBy("title"));
+        } else {
+            videosQuery = query(videosQuery, orderBy("uploadDate", "desc"));
+        }
+
+        videosQuery = query(videosQuery, limit(pageSize));
+
+        if (lastVisible) {
+            videosQuery = query(videosQuery, startAfter(lastVisible));
+        }
+
         const querySnapshot = await getDocs(videosQuery);
         if (querySnapshot.empty) {
             console.log("No se encontraron videos");
@@ -157,6 +188,8 @@ async function loadVideos(isLoadMore = false) {
         console.error("Error al cargar videos:", error);
         videoList.innerHTML += "<p>Error al cargar videos. Por favor, intenta de nuevo más tarde.</p>";
     }
+
+    lazyLoadImages();
 }
 
 // Función para crear un elemento de tarjeta de video
@@ -164,40 +197,30 @@ function createVideoCard(videoData) {
     console.log("Creando tarjeta para:", videoData.title);
     const videoContainer = document.createElement("div");
     videoContainer.className = 'movie';
+    videoContainer.setAttribute('tabindex', '0');
+    videoContainer.setAttribute('role', 'button');
+    videoContainer.setAttribute('aria-label', `Ver video: ${videoData.title}`);
+    
+    const safeTitle = sanitizeInput(videoData.title);
     videoContainer.innerHTML = `
         <div class="image-container">
-            <img src="placeholder.jpg" data-src="${videoData.imageUrl}" alt="${videoData.title}" loading="lazy">
+            <img src="placeholder.jpg" data-src="${videoData.imageUrl}" alt="${safeTitle}" loading="lazy">
         </div>
-        <h2 class="title">${videoData.title}</h2>
+        <h2 class="title">${safeTitle}</h2>
         <div class="info">${videoData.type} - ${videoData.genere}</div>
     `;
     videoContainer.addEventListener('click', () => {
         window.open(videoData.videoUrl, '_blank');
     });
 
-    // Implementar lazy loading
-    const img = videoContainer.querySelector('img');
-    if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    img.src = img.dataset.src;
-                    img.onload = () => {
-                        img.classList.add('loaded');
-                    };
-                    observer.unobserve(img);
-                }
-            });
-        });
-        observer.observe(img);
-    } else {
-        img.src = img.dataset.src;
-        img.onload = () => {
-            img.classList.add('loaded');
-        };
-    }
-
     return videoContainer;
+}
+
+// Función para sanear la entrada del usuario
+function sanitizeInput(input) {
+    const div = document.createElement('div');
+    div.textContent = input;
+    return div.innerHTML;
 }
 
 // Función para actualizar la apariencia de los botones de ordenación
@@ -221,7 +244,10 @@ function setupEventListeners() {
         });
     }
     if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', () => loadVideos(true));
+        loadMoreButton.addEventListener('click', () => {
+            currentPage++;
+            loadVideos(true);
+        });
     }
     setupGenreAndSortButtons();
 }
@@ -323,6 +349,31 @@ function createRipple(event) {
     }
 
     button.appendChild(circle);
+}
+
+// Función para implementar lazy loading de imágenes
+function lazyLoadImages() {
+    const images = document.querySelectorAll('img[data-src]');
+    const options = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                img.src = img.dataset.src;
+                img.onload = () => {
+                    img.classList.add('loaded');
+                };
+                observer.unobserve(img);
+            }
+        });
+    }, options);
+
+    images.forEach(img => observer.observe(img));
 }
 
 // Inicialización principal
