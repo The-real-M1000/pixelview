@@ -26,16 +26,17 @@ let genereButtons;
 let searchInput;
 let searchButton;
 let videoForm;
+let instructionsPopup;
+let acceptButton;
 let loadMoreButton;
 let sortAlphabeticallyButton;
 let sortByDateButton;
 
 // Variables para la paginación y ordenación
 let lastVisible = null;
-const pageSize = 20;
+const pageSize = 20; // Cambiado de 25 a 20
 let currentGenre = 'all';
-let currentSortMethod = 'date';
-let currentPage = 1;
+let currentSortMethod = 'date'; // Por defecto, ordenar por fecha
 
 // Función para normalizar el texto del género
 function normalizeGenre(genre) {
@@ -56,52 +57,29 @@ function initializeElements() {
     searchInput = document.getElementById('search-bar');
     searchButton = document.getElementById('search-button');
     videoForm = document.getElementById('videoForm');
+    instructionsPopup = document.getElementById('instructionsPopup');
+    acceptButton = document.getElementById('acceptButton');
     loadMoreButton = document.getElementById('loadMoreButton');
-    sortAlphabeticallyButton = document.querySelector('.sort-buttons button:first-child');
-    sortByDateButton = document.querySelector('.sort-buttons button:last-child');
+    sortAlphabeticallyButton = document.getElementById('sortAlphabetically');
+    sortByDateButton = document.getElementById('sortByDate');
 
     if (!videoList) console.error("Elemento 'videoList' no encontrado");
     if (!genereButtons) console.error("Elemento 'genereButtons' no encontrado");
     if (!searchInput) console.error("Elemento 'searchInput' no encontrado");
     if (!searchButton) console.error("Elemento 'searchButton' no encontrado");
     if (!videoForm) console.error("Elemento 'videoForm' no encontrado");
+    if (!instructionsPopup) console.error("Elemento 'instructionsPopup' no encontrado");
+    if (!acceptButton) console.error("Elemento 'acceptButton' no encontrado");
     if (!loadMoreButton) console.error("Elemento 'loadMoreButton' no encontrado");
     if (!sortAlphabeticallyButton) console.error("Elemento 'sortAlphabetically' no encontrado");
     if (!sortByDateButton) console.error("Elemento 'sortByDate' no encontrado");
 }
 
-// Función para validar el formulario
-function validateForm() {
-    const title = document.getElementById("videoTitle").value;
-    const url = document.getElementById("videoUrl").value;
-    const imageUrl = document.getElementById("imageUrl").value;
-    
-    if (!title || !url || !imageUrl) {
-        alert("Por favor, rellena todos los campos");
-        return false;
-    }
-    
-    if (!isValidUrl(url) || !isValidUrl(imageUrl)) {
-        alert("Por favor, introduce URLs válidas");
-        return false;
-    }
-    
-    return true;
-}
-function isValidUrl(string) {
-    try {
-        new URL(string);
-        return true;
-    } catch (_) {
-        return false;  
-    }
-}
 // Función para subir video
 function setupVideoForm() {
     if (videoForm) {
         videoForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            if (!validateForm()) return;
 
             const videoTitle = document.getElementById("videoTitle").value;
             const videoUrl = document.getElementById("videoUrl").value;
@@ -143,28 +121,29 @@ async function loadVideos(isLoadMore = false) {
     if (!isLoadMore) {
         videoList.innerHTML = "";
         lastVisible = null;
-        currentPage = 1;
+    }
+
+    let videosQuery = collection(db, "videos");
+
+    // Aplicar filtro por género si no es 'all'
+    if (currentGenre !== 'all') {
+        videosQuery = query(videosQuery, where("genere", "==", currentGenre));
+    }
+
+    // Aplicar ordenación
+    if (currentSortMethod === 'alphabetical') {
+        videosQuery = query(videosQuery, orderBy("title"));
+    } else {
+        videosQuery = query(videosQuery, orderBy("uploadDate", "desc"));
+    }
+
+    videosQuery = query(videosQuery, limit(pageSize));
+
+    if (lastVisible) {
+        videosQuery = query(videosQuery, startAfter(lastVisible));
     }
 
     try {
-        let videosQuery = collection(db, "videos");
-
-        if (currentGenre !== 'all') {
-            videosQuery = query(videosQuery, where("genere", "==", currentGenre));
-        }
-
-        if (currentSortMethod === 'alphabetical') {
-            videosQuery = query(videosQuery, orderBy("title"));
-        } else {
-            videosQuery = query(videosQuery, orderBy("uploadDate", "desc"));
-        }
-
-        videosQuery = query(videosQuery, limit(pageSize));
-
-        if (lastVisible) {
-            videosQuery = query(videosQuery, startAfter(lastVisible));
-        }
-
         const querySnapshot = await getDocs(videosQuery);
         if (querySnapshot.empty) {
             console.log("No se encontraron videos");
@@ -186,7 +165,6 @@ async function loadVideos(isLoadMore = false) {
         console.error("Error al cargar videos:", error);
         videoList.innerHTML += "<p>Error al cargar videos. Por favor, intenta de nuevo más tarde.</p>";
     }
-    lazyLoadImages();
 }
 
 // Función para crear un elemento de tarjeta de video
@@ -194,58 +172,54 @@ function createVideoCard(videoData) {
     console.log("Creando tarjeta para:", videoData.title);
     const videoContainer = document.createElement("div");
     videoContainer.className = 'movie';
-    videoContainer.setAttribute('tabindex', '0');
-    videoContainer.setAttribute('role', 'button');
-    videoContainer.setAttribute('aria-label', `Ver video: ${videoData.title}`);
-    
-    const safeTitle = sanitizeInput(videoData.title);
     videoContainer.innerHTML = `
         <div class="image-container">
-            <img src="placeholder.jpg" data-src="${videoData.imageUrl}" alt="${safeTitle}" loading="lazy">
+            <img src="placeholder.jpg" data-src="${videoData.imageUrl}" alt="${videoData.title}" loading="lazy">
         </div>
-        <h2 class="title">${safeTitle}</h2>
+        <div class="title">${videoData.title}</div>
         <div class="info">${videoData.type} - ${videoData.genere}</div>
     `;
     videoContainer.addEventListener('click', () => {
         window.open(videoData.videoUrl, '_blank');
     });
 
+    // Implementar lazy loading
+    const img = videoContainer.querySelector('img');
+    if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    img.src = img.dataset.src;
+                    img.onload = () => {
+                        img.classList.add('loaded');
+                    };
+                    observer.unobserve(img);
+                }
+            });
+        });
+        observer.observe(img);
+    } else {
+        img.src = img.dataset.src;
+        img.onload = () => {
+            img.classList.add('loaded');
+        };
+    }
+
     return videoContainer;
 }
 
-// Función para sanear la entrada del usuario
-function sanitizeInput(input) {
-    const div = document.createElement('div');
-    div.textContent = input;
-    return div.innerHTML;
-}
-// Función para actualizar la apariencia de los botones de ordenación
-function updateSortButtons() {
-    if (sortAlphabeticallyButton && sortByDateButton) {
-        sortAlphabeticallyButton.classList.toggle('active', currentSortMethod === 'alphabetical');
-        sortByDateButton.classList.toggle('active', currentSortMethod === 'date');
+// Función para mostrar el pop-up
+function showPopup() {
+    if (instructionsPopup) {
+        instructionsPopup.style.display = 'block';
     }
 }
 
-// Configurar event listeners
-function setupEventListeners() {
-    if (searchButton) {
-        searchButton.addEventListener("click", performSearch);
+// Función para ocultar el pop-up
+function hidePopup() {
+    if (instructionsPopup) {
+        instructionsPopup.style.display = 'none';
     }
-    if (searchInput) {
-        searchInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter") {
-                performSearch();
-            }
-        });
-    }
-    if (loadMoreButton) {
-        loadMoreButton.addEventListener('click', () => {
-            currentPage++;
-            loadVideos(true);
-        });
-    }
-    setupGenreAndSortButtons();
 }
 
 // Función para configurar los botones de género y ordenación
@@ -290,6 +264,35 @@ function setupGenreAndSortButtons() {
     }
 }
 
+// Función para actualizar la apariencia de los botones de ordenación
+function updateSortButtons() {
+    if (sortAlphabeticallyButton && sortByDateButton) {
+        sortAlphabeticallyButton.classList.toggle('active', currentSortMethod === 'alphabetical');
+        sortByDateButton.classList.toggle('active', currentSortMethod === 'date');
+    }
+}
+
+// Configurar event listeners
+function setupEventListeners() {
+    if (searchButton) {
+        searchButton.addEventListener("click", performSearch);
+    }
+    if (searchInput) {
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                performSearch();
+            }
+        });
+    }
+    if (acceptButton) {
+        acceptButton.addEventListener('click', hidePopup);
+    }
+    if (loadMoreButton) {
+        loadMoreButton.addEventListener('click', () => loadVideos(true));
+    }
+    setupGenreAndSortButtons();
+}
+
 // Función para buscar videos
 async function performSearch() {
     if (!searchInput || !videoList) {
@@ -327,48 +330,6 @@ async function performSearch() {
     }
 }
 
-// Función para crear el efecto ripple en los botones
-function createRipple(event) {
-    const button = event.currentTarget;
-    const circle = document.createElement("span");
-    const diameter = Math.max(button.clientWidth, button.clientHeight);
-    const radius = diameter / 2;
-
-    circle.style.width = circle.style.height = `${diameter}px`;
-    circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-    circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-    circle.classList.add("ripple");
-
-    const ripple = button.getElementsByClassName("ripple")[0];
-    if (ripple) {
-        ripple.remove();
-    }
-
-    button.appendChild(circle);
-}
-
-// Función para implementar lazy loading de imágenes
-function lazyLoadImages() {
-    const images = document.querySelectorAll('img[data-src]');
-    const options = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.onload = () => {
-                    img.classList.add('loaded');
-                };
-                observer.unobserve(img);
-            }
-        });
-    }, options);
-    images.forEach(img => observer.observe(img));
-}
 // Inicialización principal
 document.addEventListener('DOMContentLoaded', (event) => {
     console.log("DOM completamente cargado y parseado");
@@ -377,10 +338,5 @@ document.addEventListener('DOMContentLoaded', (event) => {
     setupEventListeners();
     updateSortButtons(); // Actualizar los botones de ordenación al inicio
     loadVideos();
-
-    // Añadir efecto ripple a todos los botones
-    const buttons = document.getElementsByTagName("button");
-    for (const button of buttons) {
-        button.addEventListener("click", createRipple);
-    }
+    showPopup();
 });
