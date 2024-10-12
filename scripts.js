@@ -191,6 +191,12 @@ async function loadVideos(isLoadMore = false) {
         console.error("Error al cargar videos:", error);
         videoList.innerHTML += "<p>Error al cargar videos. Por favor, intenta de nuevo más tarde.</p>";
     }
+      querySnapshot.forEach((doc) => {
+        const videoData = doc.data();
+        console.log("Video cargado:", videoData);
+        const videoContainer = createVideoCard(videoData);
+        videoList.appendChild(videoContainer);
+    });
 
     lazyLoadImages();
 }
@@ -212,24 +218,18 @@ function createVideoCard(videoData) {
         <h2 class="title">${safeTitle}</h2>
         <div class="info">${videoData.type} - ${videoData.genere}</div>
     `;
+    
+    // Importante: Usamos una función de flecha para preservar el contexto de 'this'
     videoContainer.addEventListener('click', () => {
         showMovieDetails(videoData);
     });
 
     return videoContainer;
 }
-   const closeButton = movieDetailsContainer.querySelector('.close-button');
-    closeButton.addEventListener('click', () => {
-        document.body.removeChild(movieDetailsContainer);
-    });
- const watchButton = movieDetailsContainer.querySelector('.watch-button');
-    watchButton.addEventListener('click', () => {
-        window.open(videoData.videoUrl, '_blank');
-    });
-}
 
 // Función para mostrar los detalles de la película
 function showMovieDetails(videoData) {
+    console.log("Mostrando detalles para:", videoData.title); // Agregado para depuración
     const movieDetailsContainer = document.createElement('div');
     movieDetailsContainer.className = 'movie-details';
     movieDetailsContainer.innerHTML = `
@@ -246,6 +246,18 @@ function showMovieDetails(videoData) {
     `;
 
     document.body.appendChild(movieDetailsContainer);
+
+     // Añadir evento para cerrar los detalles
+    const closeButton = movieDetailsContainer.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        document.body.removeChild(movieDetailsContainer);
+    });
+      const watchButton = movieDetailsContainer.querySelector('.watch-button');
+    watchButton.addEventListener('click', () => {
+        window.open(videoData.videoUrl, '_blank');
+    });
+}
+
 // Función para actualizar la apariencia de los botones de ordenación
 function updateSortButtons() {
     if (sortAlphabeticallyButton && sortByDateButton) {
