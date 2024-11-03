@@ -13,6 +13,10 @@ import {
     startAfter 
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
+// Configuración de TMDB
+const TMDB_API_KEY = 'c68b3c5edd56efe86a36e35c4dc891fc';
+const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
+
 // Configuración de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyAmHL0-1uJZgPAhxqDN4zA1uXH-X6YtzY",
@@ -36,7 +40,44 @@ let currentSortMethod = 'date';
 let isSearching = false;
 let isLoading = false;
 
-// Función para normalizar texto (eliminar acentos, convertir a minúsculas, etc.)
+// Funciones TMDB
+async function searchMovie(title) {
+    try {
+        const response = await fetch(
+            `${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(title)}&language=es-ES`
+        );
+        
+        if (!response.ok) {
+            throw new Error('TMDB API request failed');
+        }
+        
+        const data = await response.json();
+        return data.results[0]; // Retorna el primer resultado (más relevante)
+    } catch (error) {
+        console.error('Error searching TMDB:', error);
+        return null;
+    }
+}
+
+function getPosterUrl(posterPath, size = 'w500') {
+    if (!posterPath) return null;
+    return `https://image.tmdb.org/t/p/${size}${posterPath}`;
+}
+
+async function getMoviePoster(title) {
+    try {
+        const movie = await searchMovie(title);
+        if (movie && movie.poster_path) {
+            return getPosterUrl(movie.poster_path);
+        }
+        return null;
+    } catch (error) {
+        console.error('Error getting movie poster:', error);
+        return null;
+    }
+}
+
+// Función para normalizar texto
 function normalizeText(text) {
     return text.toLowerCase()
                .normalize("NFD")
@@ -46,7 +87,7 @@ function normalizeText(text) {
                .replace(/\s+/g, "-");
 }
 
-// Función específica para normalizar géneros
+// Función para normalizar géneros
 function normalizeGenre(genre) {
     if (genre === 'Ciencia Ficción' || genre === 'ciencia ficcion') {
         return 'ciencia-ficcion';
@@ -72,6 +113,57 @@ function showError(container, message) {
             <button onclick="location.reload()">Reintentar</button>
         </div>
     `;
+}
+
+// Función para crear tarjetas de video
+async function createVideoCard(videoData) {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
+    
+    // Crear estructura inicial de la tarjeta con estado de carga
+    card.innerHTML = `
+        <div class="image-container">
+            <div class="loading-overlay">
+                <div class="loading-spinner"></div>
+            </div>
+            <img src="/assets/placeholder.jpg" 
+                 alt="${videoData.title}"
+                 loading="lazy">
+        </div>
+        <div class="movie-info">
+            <h3>${videoData.title}</h3>
+            <p>${videoData.type || ''} ${videoData.genere ? `- ${videoData.genere}` : ''}</p>
+        </div>
+    `;
+
+    // Intentar obtener el póster de TMDB
+    try {
+        const posterUrl = await getMoviePoster(videoData.title);
+        const img = card.querySelector('img');
+        const loadingOverlay = card.querySelector('.loading-overlay');
+        
+        if (posterUrl) {
+            img.src = posterUrl;
+        }
+        
+        // Eliminar overlay de carga cuando la imagen se carga o si hay error
+        img.onload = () => loadingOverlay.remove();
+        img.onerror = () => {
+            img.src = '/assets/placeholder.jpg';
+            loadingOverlay.remove();
+        };
+    } catch (error) {
+        console.error('Error fetching poster:', error);
+        const loadingOverlay = card.querySelector('.loading-overlay');
+        if (loadingOverlay) loadingOverlay.remove();
+    }
+
+    // Agregar evento de clic para la navegación
+    card.addEventListener('click', () => {
+        window.location.href = `movie.html?id=${videoData.id}`;
+    });
+
+    return card;
 }
 
 // Función principal para cargar videos
@@ -131,11 +223,11 @@ async function loadVideos(isLoadMore = false) {
         }
 
         const fragment = document.createDocumentFragment();
-        querySnapshot.forEach((doc) => {
+        for (const doc of querySnapshot.docs) {
             const videoData = { ...doc.data(), id: doc.id };
-            const videoCard = createVideoCard(videoData);
+            const videoCard = await createVideoCard(videoData);
             fragment.appendChild(videoCard);
-        });
+        }
         videoList.appendChild(fragment);
 
         // Actualizar estado de paginación
@@ -154,49 +246,7 @@ async function loadVideos(isLoadMore = false) {
     }
 }
 
-// Función para crear tarjetas de video
-function createVideoCard(videoData) {
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-    
-    card.innerHTML = `
-        <div class="image-container">
-            <img src="${videoData.imageUrl || '/assets/placeholder.jpg'}" 
-                 alt="${videoData.title}"
-                 onerror="this.src='/assets/placeholder.jpg'"
-                 loading="lazy">
-        </div>
-        <div class="movie-info">
-            <h3>${videoData.title}</h3>
-            <p>${videoData.type || ''} ${videoData.genere ? `- ${videoData.genere}` : ''}</p>
-        </div>
-    `;
-
-    // Agregar evento de clic para la navegación
-    card.addEventListener('click', () => {
-        window.location.href = `movie.html?id=${videoData.id}`;
-    });
-
-    // Implementar lazy loading de imágenes
-    const img = card.querySelector('img');
-    if ('loading' in HTMLImageElement.prototype) {
-        img.loading = 'lazy';
-    } else if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    img.src = videoData.imageUrl || '/assets/placeholder.jpg';
-                    observer.unobserve(img);
-                }
-            });
-        });
-        observer.observe(img);
-    }
-
-    return card;
-}
-
-// Función mejorada para búsqueda con debounce
+// Función de búsqueda con debounce
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -237,17 +287,17 @@ async function performSearch() {
         const fragment = document.createDocumentFragment();
         let resultsFound = false;
 
-        querySnapshot.forEach((doc) => {
+        for (const doc of querySnapshot.docs) {
             const videoData = { ...doc.data(), id: doc.id };
             const normalizedTitle = normalizeText(videoData.title);
             const normalizedGenre = normalizeText(videoData.genere || '');
             
             if (normalizedTitle.includes(searchQuery) || normalizedGenre.includes(searchQuery)) {
-                const videoCard = createVideoCard(videoData);
+                const videoCard = await createVideoCard(videoData);
                 fragment.appendChild(videoCard);
                 resultsFound = true;
             }
-        });
+        }
 
         if (!resultsFound) {
             videoList.innerHTML = `
