@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelView - Tu Portal de Entretenimiento</title>
+    
+    <!-- Precargar fuentes críticas -->
+    <link rel="preload" href="https://fonts.gstatic.com/s/rubik/v28/iJWZBXyIfDnIV5PNhY1KTN7Z-Yh-B4iFV0UzdYPFkaVNA6w.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://fonts.gstatic.com/s/pixelifysans/v1/CHy2V-3HFUT7aC4iv43qHEmkY7xwIAWq.woff2" as="font" type="font/woff2" crossorigin>
+    
+    <!-- Fuentes -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Meta tags -->
+    <meta name="description" content="PixelView - Tu portal de entretenimiento con los mejores contenidos">
+    <meta name="keywords" content="películas, series, entretenimiento, streaming">
+    <meta name="theme-color" content="#121212">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 onclick="window.location.href='index.html'">PixelView</h1>
+            <div class="buttons">
+                <button onclick="window.location.href='index.html'">Inicio</button>
+                <button onclick="window.open('https://www.paypal.me/jatmilop', '_blank')">Donar</button>
+               
+                
+                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
+            <button onclick="window.location.href='contacto.html'">Contacto y soporte</button>
+            </div>
+        </div>
+        </header>
+
+        <!-- Barra de búsqueda -->
+        <div class="search-container">
+            <input type="text" id="search-bar" class="search-bar" placeholder="Buscar contenido...">
+        </div>
+
+        <!-- Botones de categoría y ordenamiento -->
+        <div class="category-buttons">
+            <div class="sort-buttons">
+                <button class="sort-button">A-Z</button>
+                <button class="sort-button active">Nuevo</button>
+            </div>
+
+            <button class="genre-button active" data-genre="all">Todos</button>
+            <button class="genre-button" data-genre="aventura">Aventura</button>
+            <button class="genre-button" data-genre="ciencia-ficcion">Ciencia Ficción</button>
+            <button class="genre-button" data-genre="infantil">Infantil</button>
+            <button class="genre-button" data-genre="comedia">Comedia</button>
+            <button class="genre-button" data-genre="drama">Drama</button>
+            <button class="genre-button" data-genre="terror">Terror</button>
+        </div>
+
+        <!-- Lista de videos -->
+        <div id="videoList" class="movie-list">
+            <!-- El contenido se cargará dinámicamente -->
+        </div>
+
+        <!-- Botón de cargar más -->
+        <div id="loadMoreContainer" class="load-more-container">
+            <button>Cargar más</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>PixelView © 2024 - Todos los derechos reservados</p>
+    </footer>
+
+    <!-- Scripts -->
+    <!-- Firebase -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js"></script>
+    
+    <!-- Script principal -->
+    <script type="module" src="scripts.js"></script>
+
+    <!-- Script de fallback para navegadores antiguos -->
+    <script nomodule>
+        document.body.innerHTML = 'Por favor, actualiza tu navegador para usar PixelView.';
+    </script>
+</body>
+</html>
