@@ -3,267 +3,263 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelView - Detalles de película</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Detalles de la Película</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&family=Rubik&display=swap" rel="stylesheet">
     <style>
-       /* Contenedor principal de detalles de película */
-       .movie-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: rgba(30, 30, 30, 0.95);
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Rubik', Arial, sans-serif;
+            background-color: #121212;
+            color: #f4c542;
+        }
+
+        .header {
+    background-color: #2b2b2b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;  /* Reducido de 20px a 12px */
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
 }
 
-.movie-content {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(to right, #f4c542, #e0b532, #f4c542);
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite linear;
 }
 
-/* Sección de video */
-.video-section {
-  width: 100%;
-  background-color: #000;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
 }
 
-.video-container {
-  position: relative;
-  padding-bottom: 56.25%; /* Aspect ratio 16:9 */
-  height: 0;
-  overflow: hidden;
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 2rem;
 }
 
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
+.logo {
+    font-family: 'Pixelify Sans', Arial, sans-serif;
+    font-size: 2em;  /* Reducido de 2.5em a 2em */
+    font-weight: bold;
+    color: #f4c542;
+    cursor: pointer;
+    text-decoration: none;
+    text-shadow: 0 0 10px rgba(244, 197, 66, 0.5);
+    transition: all 0.3s ease;
 }
 
-/* Detalles de la película */
-.movie-details {
-  padding: 20px;
-  color: #ffffff;
+.logo:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 20px rgba(244, 197, 66, 0.8);
 }
 
-.movie-details h1 {
-  font-size: 2.5em;
-  color: #f4c542;
-  margin-bottom: 20px;
-  font-family: 'Rubik', Arial, sans-serif;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.nav-buttons {
+    display: flex;
+    gap: 15px;  /* Reducido de 20px a 15px */
+    flex-wrap: wrap;
 }
 
-.movie-metadata {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-  font-size: 1.1em;
+.nav-button {
+    margin: 3px;  /* Reducido de 5px a 3px */
+    padding: 6px 14px;  /* Reducido de 8px 16px a 6px 14px */
+    border: none;
+    border-radius: 20px;  /* Reducido de 25px a 20px */
+    cursor: pointer;
+    background-color: #f4c542;
+    color: #121212;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: 'Rubik', Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
 }
 
-.movie-metadata span {
-  background-color: rgba(244, 197, 66, 0.1);
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(244, 197, 66, 0.3);
+.nav-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: all 0.5s;
 }
 
-/* Sección de películas recomendadas */
-.movie-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: rgba(30, 30, 30, 0.95);
-  border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+.nav-button:hover::before {
+    left: 100%;
 }
 
-.movie-content {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.nav-button:hover {
+    background-color: #e0b532;
+    transform: translateY(-2px);  /* Reducido de -3px a -2px */
+    box-shadow: 0 3
 }
+        /* Resto de los estilos existentes */
+        .movie-detail-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-/* Sección de video */
-.video-section {
-  width: 100%;
-  background-color: #000;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-}
+        .movie-content {
+            display: flex;
+            gap: 20px;
+        }
 
-.video-container {
-  position: relative;
-  padding-bottom: 56.25%;
-  height: 0;
-  overflow: hidden;
-}
+        .video-section {
+            flex: 1;
+        }
 
-.video-container iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
+        .video-container {
+            background: #000;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
 
-/* Detalles de la película */
-.movie-details {
-  padding: 20px;
-  color: #ffffff;
-}
+        .video-container iframe {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+        }
 
-.movie-details h1 {
-  font-size: 2.5em;
-  color: #f4c542;
-  margin-bottom: 20px;
-  font-family: 'Rubik', Arial, sans-serif;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+        .movie-details {
+            background: #2b2b2b;
+            padding: 20px;
+            border-radius: 8px;
+        }
 
-.movie-metadata {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-bottom: 20px;
-  font-size: 1.1em;
-}
+        #movieTitle {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #f4c542;
+        }
 
-.movie-metadata span {
-  background-color: rgba(244, 197, 66, 0.1);
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid rgba(244, 197, 66, 0.3);
-}
+        .movie-metadata {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #f4c542;
+        }
 
-/* Sección de películas recomendadas */
-.recommended-movies {
-  margin-top: 40px;
-}
+        .recommended-movies {
+            width: 300px;
+        }
 
-.recommended-movies h2 {
-  font-size: 1.8em;
-  color: #f4c542;
-  margin-bottom: 20px;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
+        .recommended-movies h2 {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #f4c542;
+        }
 
-.recommended-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr); /* Aumentamos a 5 columnas */
-  gap: 15px; /* Reducimos el gap */
-  padding: 20px 0;
-}
+        .recommended-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
 
-/* Tarjetas de película recomendada */
-.movie-card {
-  position: relative;
-  background-color: #2b2b2b;
-  border-radius: 8px; /* Reducimos el border-radius */
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  cursor: pointer;
-}
+        .movie-card {
+            background: #2b2b2b;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
 
-.movie-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
+        .movie-card:hover {
+            transform: translateY(-2px);
+        }
 
-.movie-card img {
-  width: 100%;
-  height: 220px; /* Reducimos la altura */
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
+        .movie-card img {
+            width: 100%;
+            height: 169px;
+            object-fit: cover;
+        }
 
-.movie-card:hover img {
-  transform: scale(1.05);
-}
+        .movie-info {
+            padding: 10px;
+        }
 
-.movie-info {
-  padding: 12px; /* Reducimos el padding */
-}
+        .movie-info h3 {
+            font-size: 14px;
+            color: #f4c542;
+        }
 
-.movie-info h3 {
-  color: #ffffff;
-  margin: 0;
-  font-size: 0.9em; /* Reducimos el tamaño de fuente */
-  line-height: 1.3;
-}
+        #movieDescription {
+            color: #f4c542;
+        }
 
-/* Media queries para responsividad */
-@media (max-width: 1200px) {
-  .recommended-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
 
-@media (max-width: 992px) {
-  .recommended-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+            .nav-buttons {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
 
-@media (max-width: 768px) {
-  .movie-detail-container {
-    padding: 10px;
-  }
-  .movie-details h1 {
-    font-size: 2em;
-  }
-  .recommended-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .movie-card img {
-    height: 200px;
-  }
-}
+            .movie-content {
+                flex-direction: column;
+            }
 
-@media (max-width: 480px) {
-  .movie-details h1 {
-    font-size: 1.8em;
-  }
-  .recommended-grid {
-    grid-template-columns: repeat(1, 1fr);
-  }
-  .movie-card img {
-    height: 180px;
-  }
-}
+            .recommended-movies {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Header se mantiene igual que en index.html -->
+    <header class="header">
+        <div class="header-content">
+            <a href="index.html" class="logo">PixelView</a>
+            <nav class="nav-buttons">
+                <a href="index.html" class="nav-button">Inicio</a>
+                <a href="#" class="nav-button">Donar</a>
+                <a href="#" class="nav-button">Canal de WhatsApp</a>
+                <a href="contacto.html" class="nav-button">Contacto y soporte</a>
+            </nav>
+        </div>
+    </header>
+
     <div class="movie-detail-container">
         <div class="movie-content">
             <div class="video-section">
                 <div class="video-container">
-                    <iframe id="movieIframe" allowfullscreen></iframe>
+                    <!-- El video se insertará aquí desde JavaScript -->
                 </div>
                 <div class="movie-details">
                     <h1 id="movieTitle"></h1>
                     <div class="movie-metadata">
-                        <p id="movieGenre"></p>
-                        <p id="movieType"></p>
-                        <p id="movieDescription"></p>
+                        <!-- Los metadatos se insertarán aquí desde JavaScript -->
                     </div>
+                    <p id="movieDescription"></p>
                 </div>
             </div>
             <div class="recommended-movies">
                 <h2>Películas recomendadas</h2>
-                <div class="recommended-grid" id="recommendedMovies">
-                    <!-- Películas recomendadas se cargarán aquí -->
+                <div id="recommendedMovies" class="recommended-grid">
+                    <!-- Las películas recomendadas se insertarán aquí desde JavaScript -->
                 </div>
             </div>
         </div>
