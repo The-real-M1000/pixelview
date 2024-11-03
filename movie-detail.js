@@ -38,6 +38,23 @@ async function searchMovie(title) {
     }
 }
 
+async function getMovieDetails(movieId) {
+    try {
+        const response = await fetch(
+            `${TMDB_BASE_URL}/movie/${movieId}?api_key=${TMDB_API_KEY}&append_to_response=credits&language=es-ES`
+        );
+        
+        if (!response.ok) {
+            throw new Error('TMDB API request failed');
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('Error getting movie details:', error);
+        return null;
+    }
+}
+
 function getPosterUrl(posterPath, size = 'w500') {
     if (!posterPath) return null;
     return `https://image.tmdb.org/t/p/${size}${posterPath}`;
@@ -47,12 +64,15 @@ async function getMoviePoster(title) {
     try {
         const movie = await searchMovie(title);
         if (movie && movie.poster_path) {
-            return getPosterUrl(movie.poster_path);
+            return {
+                posterUrl: getPosterUrl(movie.poster_path),
+                movieId: movie.id
+            };
         }
-        return null;
+        return { posterUrl: null, movieId: null };
     } catch (error) {
         console.error('Error getting movie poster:', error);
-        return null;
+        return { posterUrl: null, movieId: null };
     }
 }
 
@@ -78,28 +98,49 @@ async function loadMovieDetails() {
         // Actualizar título
         document.getElementById('movieTitle').textContent = movieData.title;
         
-        // Buscar y actualizar el póster desde TMDB
-        const posterUrl = await getMoviePoster(movieData.title);
+        // Buscar información de TMDB
+        const { posterUrl, movieId: tmdbId } = await getMoviePoster(movieData.title);
+        
+        // Actualizar póster
         const posterImage = document.getElementById('moviePoster');
         if (posterImage && posterUrl) {
             posterImage.src = posterUrl;
         }
-        
-        // Actualizar metadatos
-        const metadataContainer = document.querySelector('.movie-metadata');
-        if (metadataContainer) {
-            metadataContainer.innerHTML = `
-                <span id="movieGenre">Género: ${movieData.genere || 'No especificado'}</span>
-                <span id="movieType">Tipo: ${movieData.type || 'No especificado'}</span>
-                ${movieData.duration ? `<span id="movieDuration">Duración: ${movieData.duration}</span>` : ''}
-                ${movieData.year ? `<span id="movieYear">Año: ${movieData.year}</span>` : ''}
-            `;
-        }
-        
-        // Actualizar descripción
-        const descriptionElement = document.getElementById('movieDescription');
-        if (descriptionElement && movieData.description) {
-            descriptionElement.textContent = movieData.description;
+
+        // Obtener detalles adicionales de TMDB
+        if (tmdbId) {
+            const tmdbDetails = await getMovieDetails(tmdbId);
+            if (tmdbDetails) {
+                // Actualizar metadatos extendidos
+                const metadataContainer = document.querySelector('.movie-metadata');
+                if (metadataContainer) {
+                    const director = tmdbDetails.credits.crew.find(person => person.job === "Director");
+                    const mainCast = tmdbDetails.credits.cast.slice(0, 3).map(actor => actor.name).join(', ');
+                    
+                    metadataContainer.innerHTML = `
+                        <div class="metadata-section">
+                            <span id="movieGenre">Género: ${movieData.genere || 'No especificado'}</span>
+                            <span id="movieType">Tipo: ${movieData.type || 'No especificado'}</span>
+                            ${movieData.duration ? `<span id="movieDuration">Duración: ${movieData.duration}</span>` : ''}
+                            <span id="movieYear">Fecha de estreno: ${new Date(tmdbDetails.release_date).toLocaleDateString('es-ES')}</span>
+                            <span id="movieRating">Calificación: ${tmdbDetails.vote_average.toFixed(1)}/10</span>
+                        </div>
+                        <div class="metadata-section">
+                            ${director ? `<span id="movieDirector">Director: ${director.name}</span>` : ''}
+                            <span id="movieCast">Actores principales: ${mainCast}</span>
+                        </div>
+                    `;
+                }
+                
+                // Actualizar sinopsis
+                const descriptionElement = document.getElementById('movieDescription');
+                if (descriptionElement) {
+                    descriptionElement.innerHTML = `
+                        <h3>Sinopsis</h3>
+                        <p>${tmdbDetails.overview || movieData.description || 'No hay sinopsis disponible.'}</p>
+                    `;
+                }
+            }
         }
         
         // Mostrar el video
@@ -135,7 +176,7 @@ async function loadRecommendedMovies(genre, currentMovieId) {
             for (const doc of querySnapshot.docs) {
                 if (doc.id !== currentMovieId) {
                     const movieData = doc.data();
-                    const posterUrl = await getMoviePoster(movieData.title);
+                    const { posterUrl } = await getMoviePoster(movieData.title);
                     
                     const card = document.createElement('div');
                     card.className = 'movie-card';
@@ -158,7 +199,6 @@ async function loadRecommendedMovies(genre, currentMovieId) {
                     const img = card.querySelector('img');
                     const loadingOverlay = card.querySelector('.loading-overlay');
 
-                    // Manejar eventos de carga de imagen
                     img.onload = () => loadingOverlay.remove();
                     img.onerror = () => {
                         img.src = '/assets/placeholder.jpg';
