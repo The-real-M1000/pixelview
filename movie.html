@@ -3,267 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalles de la Película</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&family=Rubik&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Rubik', Arial, sans-serif;
-            background-color: #121212;
-            color: #f4c542;
-        }
-
-        .header {
-    background-color: #2b2b2b;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;  /* Reducido de 20px a 12px */
-    flex-wrap: wrap;
-    position: relative;
-    overflow: hidden;
-}
-
-.header::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: linear-gradient(to right, #f4c542, #e0b532, #f4c542);
-    background-size: 200% 100%;
-    animation: shimmer 2s infinite linear;
-}
-
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 0 2rem;
-}
-
-.logo {
-    font-family: 'Pixelify Sans', Arial, sans-serif;
-    font-size: 2em;  /* Reducido de 2.5em a 2em */
-    font-weight: bold;
-    color: #f4c542;
-    cursor: pointer;
-    text-decoration: none;
-    text-shadow: 0 0 10px rgba(244, 197, 66, 0.5);
-    transition: all 0.3s ease;
-}
-
-.logo:hover {
-    transform: scale(1.05);
-    text-shadow: 0 0 20px rgba(244, 197, 66, 0.8);
-}
-
-.nav-buttons {
-    display: flex;
-    gap: 15px;  /* Reducido de 20px a 15px */
-    flex-wrap: wrap;
-}
-
-.nav-button {
-    margin: 3px;  /* Reducido de 5px a 3px */
-    padding: 6px 14px;  /* Reducido de 8px 16px a 6px 14px */
-    border: none;
-    border-radius: 20px;  /* Reducido de 25px a 20px */
-    cursor: pointer;
-    background-color: #f4c542;
-    color: #121212;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    font-family: 'Rubik', Arial, sans-serif;
-    position: relative;
-    overflow: hidden;
-}
-
-.nav-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: all 0.5s;
-}
-
-.nav-button:hover::before {
-    left: 100%;
-}
-
-.nav-button:hover {
-    background-color: #e0b532;
-    transform: translateY(-2px);  /* Reducido de -3px a -2px */
-    box-shadow: 0 3
-}
-        /* Resto de los estilos existentes */
-        .movie-detail-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .movie-content {
-            display: flex;
-            gap: 20px;
-        }
-
-        .video-section {
-            flex: 1;
-        }
-
-        .video-container {
-            background: #000;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .video-container iframe {
-            width: 100%;
-            aspect-ratio: 16/9;
-            border: none;
-        }
-
-        .movie-details {
-            background: #2b2b2b;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        #movieTitle {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #f4c542;
-        }
-
-        .movie-metadata {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
-            color: #f4c542;
-        }
-
-        .recommended-movies {
-            width: 300px;
-        }
-
-        .recommended-movies h2 {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: #f4c542;
-        }
-
-        .recommended-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .movie-card {
-            background: #2b2b2b;
-            border-radius: 8px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-
-        .movie-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .movie-card img {
-            width: 100%;
-            height: 169px;
-            object-fit: cover;
-        }
-
-        .movie-info {
-            padding: 10px;
-        }
-
-        .movie-info h3 {
-            font-size: 14px;
-            color: #f4c542;
-        }
-
-        #movieDescription {
-            color: #f4c542;
-        }
-
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .nav-buttons {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-
-            .movie-content {
-                flex-direction: column;
-            }
-
-            .recommended-movies {
-                width: 100%;
-            }
-        }
-    </style>
+    <title>PixelView - Detalles de Película</title>
+    <link rel="stylesheet" href="movie.css">
 </head>
 <body>
-    <header class="header">
+    <header>
         <div class="header-content">
             <a href="index.html" class="logo">PixelView</a>
-            <nav class="nav-buttons">
+            <nav>
                 <a href="index.html" class="nav-button">Inicio</a>
-                <a onclick="window.open('https://www.paypal.me/jatmilop', '_blank')" class="nav-button">Donar</a>
-                <a onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')" class="nav-button">Canal de WhatsApp</a>
+                <button class="nav-button">Donar</button>
+                <button class="nav-button">Canal de WhatsApp</button>
                 <a href="contacto.html" class="nav-button">Contacto y soporte</a>
             </nav>
         </div>
     </header>
 
     <div class="movie-detail-container">
-        <div class="movie-content">
-            <div class="video-section">
+        <main class="movie-content">
+            <section class="video-section">
                 <div class="video-container">
-                    <!-- El video se insertará aquí desde JavaScript -->
+                    <!-- El contenido del video se insertará aquí mediante JavaScript -->
                 </div>
-                <div class="movie-details">
-                    <h1 id="movieTitle"></h1>
+            </section>
+
+            <section class="movie-details">
+                <h1 id="movieTitle"></h1>
+                
+                <div class="movie-info-container">
+                    <img id="moviePoster" src="/assets/placeholder.jpg" alt="Movie poster" class="movie-poster">
                     <div class="movie-metadata">
-                        <!-- Los metadatos se insertarán aquí desde JavaScript -->
+                        <!-- Los metadatos se insertarán aquí mediante JavaScript -->
                     </div>
-                    <p id="movieDescription"></p>
                 </div>
-            </div>
-            <div class="recommended-movies">
-                <h2>Películas recomendadas</h2>
-                <div id="recommendedMovies" class="recommended-grid">
-                    <!-- Las películas recomendadas se insertarán aquí desde JavaScript -->
+
+                <div id="movieDescription">
+                    <!-- La descripción se insertará aquí mediante JavaScript -->
                 </div>
+            </section>
+        </main>
+
+        <aside class="recommended-movies">
+            <h2>Películas recomendadas</h2>
+            <div id="recommendedMovies" class="recommended-grid">
+                <!-- Las películas recomendadas se insertarán aquí mediante JavaScript -->
             </div>
-        </div>
+        </aside>
     </div>
+
     <script type="module" src="movie-detail.js"></script>
 </body>
 </html>
