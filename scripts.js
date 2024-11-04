@@ -64,12 +64,22 @@ function getPosterUrl(posterPath, size = 'w500') {
     return `https://image.tmdb.org/t/p/${size}${posterPath}`;
 }
 
-async function getMoviePoster(title) {
+async function getMoviePoster(title, originalTitle) {
     try {
-        const movie = await searchMovie(title);
-        if (movie && movie.poster_path) {
-            return getPosterUrl(movie.poster_path);
+        // Primero intenta buscar con originalTitle si está disponible
+        if (originalTitle) {
+            const movieByOriginal = await searchMovie(originalTitle);
+            if (movieByOriginal && movieByOriginal.poster_path) {
+                return getPosterUrl(movieByOriginal.poster_path);
+            }
         }
+        
+        // Si no encuentra con originalTitle o no está disponible, busca con title
+        const movieByTitle = await searchMovie(title);
+        if (movieByTitle && movieByTitle.poster_path) {
+            return getPosterUrl(movieByTitle.poster_path);
+        }
+        
         return null;
     } catch (error) {
         console.error('Error getting movie poster:', error);
@@ -136,9 +146,9 @@ async function createVideoCard(videoData) {
         </div>
     `;
 
-    // Intentar obtener el póster de TMDB
+    // Intentar obtener el póster de TMDB usando originalTitle si está disponible
     try {
-        const posterUrl = await getMoviePoster(videoData.title);
+        const posterUrl = await getMoviePoster(videoData.title, videoData.originalTitle);
         const img = card.querySelector('img');
         const loadingOverlay = card.querySelector('.loading-overlay');
         
