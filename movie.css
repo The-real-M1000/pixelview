@@ -1,0 +1,359 @@
+/* Estilos generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #141414;
+    color: #2b2b2b;
+    line-height: 1.6;
+}
+
+/* Header */
+header {
+    background-color: #121212;
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #f4c542;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    color: #f4c542;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s;
+}
+
+.nav-button:hover {
+    color: #f4c542;
+}
+
+/* Contenedor principal */
+.movie-detail-container {
+    max-width: 1400px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 2rem;
+}
+
+/* Contenido principal */
+.movie-content {
+    width: 100%;
+}
+
+/* Sección de video */
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Detalles de la película */
+.movie-details {
+    background: rgba(20, 20, 20, 0.95);
+    border-radius: 1rem;
+    padding: 2rem;
+}
+
+#movieTitle {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #ffffff;
+}
+
+.movie-info-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.movie-poster {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Metadatos de la película */
+.movie-metadata {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.metadata-section {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.metadata-section h3 {
+    color: #f4c542;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.metadata-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.metadata-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.metadata-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    opacity: 0.7;
+    color: #f4c542;
+}
+
+.metadata-label {
+    font-weight: 600;
+    color: #9ca3af;
+    min-width: 120px;
+}
+
+.metadata-value {
+    color: #ffffff;
+    word-break: break-word;
+}
+
+/* Descripción de la película */
+#movieDescription {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#movieDescription h3 {
+    color: #f4c542;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+#movieDescription p {
+    line-height: 1.8;
+    color: #ffffff;
+}
+
+/* Películas recomendadas */
+.recommended-movies {
+    position: sticky;
+    top: 100px;
+    align-self: start;
+    background: rgba(20, 20, 20, 0.95);
+    border-radius: 1rem;
+    padding: 1.5rem;
+}
+
+.recommended-movies h2 {
+    color: #848484;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+.recommended-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.movie-card {
+    cursor: pointer;
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.image-container {
+    position: relative;
+    padding-bottom: 150%;
+    overflow: hidden;
+    border-radius: 0.5rem;
+}
+
+.image-container img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 0.5rem;
+}
+
+.movie-info h3 {
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    color: #ffffff;
+    text-align: center;
+}
+
+/* Loading spinner */
+.loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #f4c542;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Mensaje de error */
+.error-message {
+    background: rgba(229, 9, 20, 0.1);
+    border: 1px solid #f4c542;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.error-message button {
+    background: #f4c542;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.error-message button:hover {
+    background: #cda536;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .movie-detail-container {
+        grid-template-columns: 1fr;
+    }
+
+    .recommended-movies {
+        position: static;
+        margin-top: 2rem;
+    }
+
+    .recommended-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-info-container {
+        grid-template-columns: 1fr;
+    }
+
+    .movie-poster {
+        margin: 0 auto;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #movieTitle {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .movie-details {
+        padding: 1rem;
+    }
+
+    .metadata-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .metadata-label {
+        min-width: auto;
+    }
+}
