@@ -290,7 +290,7 @@ async function performSearch() {
         showLoading(videoList);
         
         const videosRef = collection(db, "videos");
-        const q = query(videosRef, orderBy("title"));
+        const q = query(videosRef, orderBy("uploadDate", "desc")); // Cambiado para mantener el orden por fecha
         const querySnapshot = await getDocs(q);
         
         videoList.innerHTML = '';
@@ -353,7 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sortButtons = document.querySelectorAll('.sort-button');
     sortButtons.forEach(button => {
         button.addEventListener('click', () => {
-            currentSortMethod = button.textContent.trim().toLowerCase() === 'a-z' ? 'alphabetical' : 'date';
+            const isAlphabetical = button.textContent.trim().toLowerCase() === 'a-z';
+            currentSortMethod = isAlphabetical ? 'alphabetical' : 'date';
             
             sortButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
@@ -363,6 +364,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Activar el botón de ordenamiento por fecha por defecto
+    const dateButton = Array.from(sortButtons).find(btn => 
+        btn.textContent.trim().toLowerCase() === 'nuevo'
+    );
+    if (dateButton) {
+        dateButton.classList.add('active');
+    }
 
     // Configurar barra de búsqueda
     const searchInput = document.getElementById('search-bar');

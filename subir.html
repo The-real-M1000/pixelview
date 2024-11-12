@@ -1,116 +1,203 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H8QBBRRB3R"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-H8QBBRRB3R');
-    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PixelView: Películas y series gratis</title>
-    <link rel="icon" href="favicon.ico">
-    <!-- Fuentes de Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
-    <!-- Vinculación al archivo CSS -->
+    <title>Subir Video - PixelView</title>
     <link rel="stylesheet" href="subir.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
     
-       <div class="container">
-        <div class="header">
-            <h1 onclick="window.location.href='index.html'">PixelView</h1>
-            <div class="buttons">
-                <button onclick="window.location.href='index.html'">Inicio</button>
-                <button onclick="window.open('https://www.paypal.me/jatmilop', '_blank')">Donar</button>
-               
-                
-                <button onclick="window.open('https://whatsapp.com/channel/0029Vaj0fgnCsU9K97c0H031', '_blank')">Canal de WhatsApp</button>
-            <button onclick="window.location.href='contacto.html'">Contacto y soporte</button>
-            </div>
+  <form id="uploadForm" class="upload-form">
+    <div class="form-group">
+        <label for="title">Título</label>
+        <input type="text" id="title" name="title" placeholder="Ingresa el título" required>
+    </div>
+
+    <div class="form-group">
+        <label for="originalTitle">Título Original (opcional)</label>
+        <input type="text" id="originalTitle" name="originalTitle" placeholder="Ingresa el título original">
+    </div>
+
+    <div class="form-group">
+        <label for="videoUrl">URL del video</label>
+        <input type="text" id="videoUrl" name="videoUrl" placeholder="Ingresa la URL del video" required>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group half">
+            <label for="type">Tipo</label>
+            <select id="type" name="type" required>
+                <option value="">Selecciona el tipo</option>
+                <option value="pelicula">Película</option>
+                <option value="serie">Serie</option>
+            </select>
         </div>
 
-    <form id="videoForm">
-      <label for="videoTitle">Título:</label>
-      <input type="text" id="videoTitle" required>
-
-      <label for="videoUrl">inframe del video (Google Drive):</label>
-      <input type="url" id="videoUrl" required>
-
-      
-
-      <label for="videoType">Tipo:</label>
-      <select id="videoType" required>
-                <option value="">Selecciona el tipo</option>
-                <option value="Película">Película</option>
-                <option value="Serie">Serie</option>
-            </select>
-
-      <label for="videoGenere">Género:</label>
-      <select id="videoGenere" required>
+        <div class="form-group half">
+            <label for="genere">Género</label>
+            <select id="genere" name="genere" required>
                 <option value="">Selecciona un género</option>
-                <option value="Acción">Acción</option>
-                <option value="Aventura">Aventura</option>
-                <option value="Ciencia Ficción">Ciencia Ficción</option>
-                <option value="Infantil">Infantil</option>
-                <option value="Comedia">Comedia</option>
-                <option value="Drama">Drama</option>
-                <option value="Terror">Terror</option>
+                <option value="aventura">Aventura</option>
+                <option value="ciencia-ficción">Ciencia Ficción</option>
+                <option value="infantil">Infantil</option>
+                <option value="comedia">Comedia</option>
+                <option value="drama">Drama</option>
+                <option value="terror">Terror</option>
+                <option value="accion">Accion</option>
             </select>
-
-      <button type="submit">Subir video</button>
-    </form>
-  </div>
-
-  <!-- Pop-up de instrucciones -->
-  <div id="instructionsPopup" class="popup" style="display: flex;">
-    <div class="popup-content">
-      <h2 style="color: #f4c542;">Sube tu Película o Serie a PixelView</h2>
-      <h3 style="color: #FF514D;">*Lee esto antes de subir*</h3>
-      <ol>
-        <li><strong>Nombre:</strong> Indica el nombre.</li>
-        <li><strong>Enlace público:</strong> Usa
-          <a href="https://drive.google.com" target="_blank" style="color: #FF7F50;">Google Drive</a> o <a
-            href="https://mega.nz" target="_blank" style="color: #FF7F50;">Mega NZ (Recomendada, SOLO MP4)</a>.
-        </li>
-        <li><strong>Portada:</strong> Proporciona el enlace a la imagen.</li>
-        <li><strong>Tipo:</strong> Selecciona "Película" o "Serie".</li>
-        <li><strong>Género:</strong> Elige el género de tu contenido.</li>
-      </ol>
-      <h3 style="color: #f4c542;">Reglas</h3>
-      <ul>
-        <li>Solo contenido para todo público.</li>
-        <li>Películas o series, nada más.</li>
-        <li>Usa la plataforma con respeto.</li>
-      </ul>
-      <p style="color: #FF514D;"><strong>*Solo los administradores pueden editar después de subir.* *Poner el enlace en publico*</strong></p>
-      <button id="acceptButton">Aceptar</button>
+        </div>
     </div>
-  </div>
 
+    <button type="submit" class="submit-button">Subir video</button>
+</form>
+:::
 
+<style>
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
 
+.upload-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
 
+.upload-container h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 24px;
+}
 
-  <script type="module" src="scripts.js"></script>
-  <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const popup = document.getElementById('instructionsPopup');
-    const acceptButton = document.getElementById('acceptButton');
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
-    if (acceptButton) {
-        acceptButton.addEventListener('click', function() {
-            popup.style.display = 'none';
-        });
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group.half {
+    flex: 1;
+}
+
+label {
+    font-weight: 500;
+    color: #444;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #4a90e2;
+}
+
+input::placeholder {
+    color: #999;
+}
+
+.submit-button {
+    background-color: #4a90e2;
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.submit-button:hover {
+    background-color: #357abd;
+}
+
+.submit-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 6px;
+    color: white;
+    animation: slideIn 0.3s ease;
+}
+
+.message.success {
+    background-color: #4caf50;
+}
+
+.message.error {
+    background-color: #f44336;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
     }
-});
-</script>
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+</style>
+
+    <footer>
+        <p>&copy; 2024 PixelView. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- Firebase App y Firestore -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js"></script>
+    
+    <!-- Tu script principal -->
+    <script type="module" src="scripts-subir.js"></script>
+
+    <script>
+        // Script para manejar el popup de instrucciones
+        document.addEventListener('DOMContentLoaded', () => {
+            const popup = document.getElementById('instructionsPopup');
+            const acceptButton = document.getElementById('acceptButton');
+
+            // Mostrar el popup al cargar la página
+            popup.style.display = 'flex';
+
+            // Cerrar el popup al hacer clic en el botón Aceptar
+            acceptButton.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        });
+    </script>
 </body>
-
 </html>
-
