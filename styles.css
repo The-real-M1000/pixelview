@@ -1,0 +1,662 @@
+:root {
+  --christmas-red: #c41e3a;
+  --christmas-green: #0a4025;
+  --christmas-gold: #ffd700;
+  --christmas-silver: #c0c0c0;
+  --snow-white: #ffffff;
+  --dark-green: #063018;
+  --holly-green: #146b3a;
+  --candy-red: #ea4630;
+}
+
+/* Animación de nieve */
+@keyframes snowfall {
+  0% {
+    transform: translateY(-100%) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+/* Efecto de brillo */
+@keyframes sparkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+body {
+  margin: 0;
+  font-family: 'Mountains of Christmas', 'Rubik', Arial, sans-serif;
+  background: var(--christmas-green);
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--holly-green) 0%, var(--dark-green) 100%),
+    url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='1' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E");
+  color: var(--snow-white);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Efecto de nieve */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  top: -10px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-image: 
+    radial-gradient(4px 4px at 100px 50px, #fff 50%, transparent),
+    radial-gradient(6px 6px at 200px 150px, #fff 50%, transparent),
+    radial-gradient(3px 3px at 300px 250px, #fff 50%, transparent);
+  background-size: 650px 650px;
+  animation: snowfall 20s linear infinite;
+  opacity: 0.5;
+}
+
+body::after {
+  background-size: 500px 500px;
+  animation-duration: 15s;
+  animation-delay: -5s;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 2.5em;
+  color: var(--christmas-red);
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.header h1::before,
+.header h1::after {
+  content: '🎄';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8em;
+}
+
+.header h1::before { left: -1.5em; }
+.header h1::after { right: -1.5em; }
+
+/* Botones de navegación */
+.buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Estilo común para todos los botones */
+.buttons button,
+.category-buttons button,
+.sort-buttons button,
+.load-more-container button {
+  padding: 8px 16px;
+  border: 2px solid var(--christmas-gold);
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--christmas-red) 0%, var(--candy-red) 100%);
+  color: var(--snow-white);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.buttons button::before,
+.category-buttons button::before,
+.sort-buttons button::before,
+.load-more-container button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: 0.5s;
+}
+
+.buttons button:hover::before,
+.category-buttons button:hover::before,
+.sort-buttons button:hover::before,
+.load-more-container button:hover::before {
+  left: 100%;
+}
+
+/* Barra de búsqueda y botón de subir */
+.search-container {
+  margin: 20px 0;
+  text-align: center;
+}
+
+#search-bar {
+  width: 100%;
+  max-width: 400px;
+  padding: 12px 24px;
+  border: 2px solid var(--christmas-gold);
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--snow-white);
+  font-size: 14px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+#search-bar::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+#upload-button {
+  padding: 8px 16px;
+  border: 2px solid var(--christmas-gold);
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--christmas-red) 0%, var(--candy-red) 100%);
+  color: var(--snow-white);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  display: inline-block;
+}
+
+#upload-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+#upload-button::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: 0.5s;
+}
+
+#upload-button:hover::before {
+  left: 100%;
+}
+
+/* Botones de categoría */
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* Botones de ordenamiento */
+.sort-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+/* Lista de películas */
+.movie-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15px;
+  padding: 20px 0;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.movie-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 2px solid var(--christmas-gold);
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+  position: relative;
+}
+
+.movie-card::before {
+  content: '🎁';
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.movie-card:hover::before {
+  opacity: 1;
+}
+
+.image-container {
+  position: relative;
+  padding-top: 150%;
+  overflow: hidden;
+}
+
+.image-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover .image-container img {
+  transform: scale(1.05);
+}
+
+.movie-info {
+  padding: 15px;
+  background: linear-gradient(to bottom, 
+    rgba(10, 64, 37, 0.9),
+    rgba(6, 48, 24, 0.95)
+  );
+  border-top: 1px solid var(--christmas-gold);
+}
+
+.movie-info h3 {
+  margin: 0;
+  font-size: 14px;
+  color: var(--christmas-gold);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movie-info p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--christmas-silver);
+}
+
+/* Loading spinner */
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--christmas-green);
+  border-top-color: var(--christmas-red);
+  border-radius: 50%;
+  animation: rotate 1s linear infinite;
+  margin: 20px auto;
+  box-shadow: 0 0 10px rgba(196, 30, 58, 0.3);
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Botón de cargar más */
+.load-more-container {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Botón de subir */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, var(--christmas-red) 0%, var(--candy-red) 100%);
+  border: 2px solid var(--christmas-gold);
+  border-radius: 50%;
+  color: var(--snow-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top::before {
+  content: '🎄';
+  font-size: 20px;
+  position: absolute;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-5px);
+  }
+  60% {
+    transform: translateY(-3px);
+  }
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transform: rotate(45deg);
+  transition: 0.5s;
+}
+
+.scroll-to-top:hover::after {
+  left: 100%;
+}
+
+/* Estado activo para botones */
+.buttons button.active,
+.category-buttons button.active,
+.sort-buttons button.active {
+  background: linear-gradient(135deg, var(--candy-red) 0%, var(--christmas-red) 100%);
+  border-color: var(--christmas-silver);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  animation: sparkle 2s infinite;
+}
+
+/* Media Queries */
+@media (max-width: 1200px) {
+  .movie-list {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .movie-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .movie-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .header {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+  }
+  
+  .header h1::before { left: -0.8em; }
+  .header h1::after { right: -0.8em; }
+  
+  .movie-info h3 {
+    font-size: 14px;
+  }
+  
+  .movie-info p {
+    font-size: 11px;
+  }
+  
+  .scroll-to-top {
+    width: 40px;
+    height: 40px;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .movie-list {
+    grid-template-columns: repeat(1, 1fr);
+  }
+  
+  .header h1 {
+    font-size: 2em;
+  }
+  
+  .header h1::before,
+  .header h1::after {
+    display: none;
+  }
+  
+  .movie-info {
+    padding: 8px;}
+  
+    .movie-info h3 {
+      font-size: 12px;
+    }
+    
+    .movie-info p {
+      font-size: 10px;
+    }
+    
+    .buttons button,
+    .category-buttons button,
+    .sort-buttons button {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+  }
+  
+  /* Estilos adicionales para navegación */
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 10px 0;
+  }
+  
+  .nav-buttons button {
+    background: linear-gradient(135deg, var(--christmas-red) 0%, var(--candy-red) 100%);
+    color: var(--snow-white);
+    border: 2px solid var(--christmas-gold);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  
+  .nav-buttons button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Estilos para mensajes de error o información */
+  .message {
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid var(--christmas-gold);
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 600px;
+    text-align: center;
+    color: var(--snow-white);
+    backdrop-filter: blur(5px);
+  }
+  
+  .error-message {
+    border-color: var(--christmas-red);
+    background: rgba(196, 30, 58, 0.1);
+  }
+  
+  .success-message {
+    border-color: var(--holly-green);
+    background: rgba(20, 107, 58, 0.1);
+  }
+  
+  /* Estilos para tooltips */
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip .tooltip-text {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: var(--snow-white);
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 10px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  
+  .tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /* Animación de carga de imágenes */
+  .image-loading {
+    position: relative;
+    background: linear-gradient(90deg, 
+      rgba(255, 255, 255, 0.1) 25%, 
+      rgba(255, 255, 255, 0.2) 50%, 
+      rgba(255, 255, 255, 0.1) 75%
+    );
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+  }
+  
+  @keyframes loading {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  
+  /* Estilos para la paginación */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  
+  .pagination button {
+    background: linear-gradient(135deg, var(--christmas-red) 0%, var(--candy-red) 100%);
+    color: var(--snow-white);
+    border: 2px solid var(--christmas-gold);
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .pagination button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .pagination button.active {
+    background: linear-gradient(135deg, var(--candy-red) 0%, var(--christmas-red) 100%);
+    border-color: var(--christmas-silver);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  }
+  
+  /* Estilos para el footer */
+  footer {
+    background: linear-gradient(to top, 
+      rgba(6, 48, 24, 0.95),
+      rgba(10, 64, 37, 0.9)
+    );
+    padding: 20px;
+    text-align: center;
+    margin-top: 40px;
+    border-top: 2px solid var(--christmas-gold);
+  }
+  
+  footer p {
+    color: var(--christmas-silver);
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  footer a {
+    color: var(--christmas-gold);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  footer a:hover {
+    color: var(--christmas-red);
+  }
