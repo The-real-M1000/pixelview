@@ -20,6 +20,7 @@ const AdBlocker = {
         'bidswitch.net',
         'openx.net',
         'casalemedia.com'
+        'kaarheciqa.xyz'
     ],
 
     // Lista de selectores CSS comunes de anuncios (mantener lista anterior)
