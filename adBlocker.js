@@ -1,9 +1,8 @@
 // adBlocker.js
 const AdBlocker = {
-    // Lista de dominios comunes de publicidad (mantener lista anterior)
+    // Lista de dominios comunes de publicidad
     adDomains: [
         'doubleclick.net',
-        'google-analytics.com',
         'googlesyndication.com',
         'adnxs.com',
         'facebook.com/tr',
@@ -20,10 +19,9 @@ const AdBlocker = {
         'bidswitch.net',
         'openx.net',
         'casalemedia.com'
-        'kaarheciqa.xyz'
     ],
 
-    // Lista de selectores CSS comunes de anuncios (mantener lista anterior)
+    // Lista de selectores CSS comunes de anuncios
     adSelectors: [
         '[id*="google_ads"]',
         '[id*="ad-"]',
@@ -45,12 +43,13 @@ const AdBlocker = {
 
     // Configuración del sistema anti-popups
     popupConfig: {
-        maxPopupsPerSecond: 2,
+        maxPopupsPerSecond: 0,
         blockNewWindows: true,
         blockTabHijacking: true,
         preventRedirects: true,
         blockBackgroundTabs: true,
-        preventWindowManipulation: true
+        preventWindowManipulation: true,
+        blockAllPopups: true
     },
 
     // Estado del sistema anti-popups
@@ -61,18 +60,15 @@ const AdBlocker = {
             location: window.location,
             opener: window.opener
         },
-        isFirstUserInteraction: true
+        isFirstUserInteraction: false
     },
 
     init() {
         this.setupRequestInterception();
         this.removeAdsFromDOM();
         this.setupMutationObserver();
-        
-        // Inicializar nuevo sistema agresivo anti-popups
         this.initAggressivePopupBlocker();
-        
-        console.log('Enhanced AdBlocker initialized with aggressive popup blocking');
+        console.log('Enhanced AdBlocker initialized with complete popup blocking');
     },
 
     setupRequestInterception() {
@@ -175,37 +171,39 @@ const AdBlocker = {
     },
 
     blockAllWindowOpening() {
-        // Sobrescribir window.open
-        const originalOpen = window.open;
-        window.open = (...args) => {
-            // Verificar límite de rate
-            const now = Date.now();
-            if (now - this.popupState.lastPopupTime < 1000) {
-                this.popupState.popupCount++;
-                if (this.popupState.popupCount > this.popupConfig.maxPopupsPerSecond) {
-                    console.log('Blocked rapid popup attempt');
-                    return null;
-                }
-            } else {
-                this.popupState.popupCount = 1;
-                this.popupState.lastPopupTime = now;
-            }
-
-            // Verificar si es una interacción genuina del usuario
-            if (!this.popupState.isFirstUserInteraction) {
-                console.log('Blocked non-user-initiated popup');
-                return null;
-            }
-
-            const url = args[0];
-            // Permitir solo si es una URL válida y no es un dominio de publicidad
-            if (url && !this.adDomains.some(domain => url.includes(domain))) {
-                return originalOpen.apply(window, args);
-            }
-            
-            console.log('Blocked suspicious popup:', url);
+        // Sobrescribir completamente window.open
+        window.open = function() {
+            console.log('Blocked popup window attempt');
             return null;
         };
+
+        // Bloquear showModalDialog si existe
+        if (window.showModalDialog) {
+            window.showModalDialog = function() {
+                console.log('Blocked modal dialog attempt');
+                return null;
+            };
+        }
+
+        // Bloquear target="_blank" en enlaces
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A' && (
+                e.target.target === '_blank' || 
+                e.target.target === '_new' || 
+                e.target.rel?.includes('popup')
+            )) {
+                e.preventDefault();
+                console.log('Blocked link popup attempt');
+            }
+        }, true);
+
+        // Bloquear window.openDialog si existe
+        if (window.openDialog) {
+            window.openDialog = function() {
+                console.log('Blocked dialog attempt');
+                return null;
+            };
+        }
     },
 
     preventTabHijacking() {
@@ -246,7 +244,7 @@ const AdBlocker = {
     blockRedirects() {
         // Interceptar eventos beforeunload
         window.addEventListener('beforeunload', (event) => {
-            if (this.popupConfig.preventRedirects && !this.popupState.isFirstUserInteraction) {
+            if (this.popupConfig.preventRedirects) {
                 event.preventDefault();
                 event.returnValue = '';
                 console.log('Blocked potential redirect');
@@ -275,56 +273,45 @@ const AdBlocker = {
     },
 
     preventWindowManipulation() {
-        // Bloquear intentos de manipulación de ventana
-        if (this.popupConfig.preventWindowManipulation) {
-            const properties = ['moveTo', 'moveBy', 'resizeTo', 'resizeBy', 'focus', 'blur'];
-            properties.forEach(prop => {
-                if (window[prop]) {
-                    window[prop] = function() {
-                        console.log(`Blocked window.${prop} manipulation`);
-                    };
-                }
-            });
+        const blockedMethods = [
+            'moveTo', 'moveBy', 'resizeTo', 'resizeBy', 
+            'focus', 'blur', 'open', 'alert', 'confirm', 
+            'prompt', 'print', 'showModalDialog'
+        ];
 
-            // Prevenir cambios en el tamaño de la ventana
-            Object.defineProperties(window, {
-                'innerWidth': { configurable: false },
-                'innerHeight': { configurable: false },
-                'outerWidth': { configurable: false },
-                'outerHeight': { configurable: false }
-            });
-        }
-    },
+        blockedMethods.forEach(method => {
+            if (window[method]) {
+                window[method] = function() {
+                    console.log(`Blocked window.${method} attempt`);
+                    return null;
+                };
+            }
+        });
 
-    handleUserInteractions() {
-        // Resetear el estado de interacción del usuario
-        const resetUserInteraction = () => {
-            this.popupState.isFirstUserInteraction = true;
-            setTimeout(() => {
-                this.popupState.isFirstUserInteraction = false;
-            }, 50);
-        };
-
-        // Escuchar eventos de usuario
-        ['click', 'touchstart', 'mousedown', 'keydown'].forEach(eventType => {
-            document.addEventListener(eventType, resetUserInteraction, true);
+        // Bloquear modificaciones de tamaño y posición
+        Object.defineProperties(window, {
+            'innerWidth': { configurable: false, writable: false },
+            'innerHeight': { configurable: false, writable: false },
+            'outerWidth': { configurable: false, writable: false },
+            'outerHeight': { configurable: false, writable: false },
+            'screenX': { configurable: false, writable: false },
+            'screenY': { configurable: false, writable: false }
         });
     },
 
+    handleUserInteractions() {
+        // No es necesario manejar interacciones ya que bloqueamos todo
+        this.popupState.isFirstUserInteraction = false;
+    },
+
     blockBackgroundTabs() {
-        if (this.popupConfig.blockBackgroundTabs) {
-            // Prevenir apertura de pestañas en segundo plano
-            document.addEventListener('click', (event) => {
-                if (event.target.tagName === 'A' && event.target.target === '_blank') {
-                    const url = event.target.href;
-                    if (!this.popupState.isFirstUserInteraction || 
-                        this.adDomains.some(domain => url?.includes(domain))) {
-                        event.preventDefault();
-                        console.log('Blocked background tab:', url);
-                    }
-                }
-            }, true);
-        }
+        // Prevenir apertura de pestañas en segundo plano
+        document.addEventListener('click', (event) => {
+            if (event.target.tagName === 'A' && event.target.target === '_blank') {
+                event.preventDefault();
+                console.log('Blocked background tab attempt');
+            }
+        }, true);
     },
 
     preventPopunder() {
