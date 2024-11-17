@@ -3,201 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Subir Video - PixelView</title>
+    <title>Subir Contenido</title>
     <link rel="stylesheet" href="subir.css">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
 </head>
 <body>
-    
-  <form id="uploadForm" class="upload-form">
-    <div class="form-group">
-        <label for="title">Título</label>
-        <input type="text" id="title" name="title" placeholder="Ingresa el título" required>
+    <div class="container">
+        <form id="uploadForm">
+            <div class="form-group">
+                <label for="title">Título</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="originalTitle">Título Original (opcional)</label>
+                <input type="text" id="originalTitle" name="originalTitle">
+            </div>
+
+            <div class="form-group">
+                <label for="type">Tipo</label>
+                <select id="type" name="type" required>
+                    <option value="">Selecciona el tipo</option>
+                    <option value="movie">Película</option>
+                    <option value="series">Serie</option>
+                </select>
+            </div>
+
+            <div id="movieFields" style="display: none;">
+                <div class="form-group">
+                    <label for="movieUrl">URL del video</label>
+                    <input  id="movieUrl" name="movieUrl">
+                </div>
+            </div>
+
+            <div id="seriesFields" style="display: none;">
+                <div class="form-group">
+                    <label for="seasonCount">Número de Temporadas</label>
+                    <input type="number" id="seasonCount" name="seasonCount" min="1" value="1">
+                </div>
+                <div id="seasonsContainer">
+                    <!-- Las temporadas se generarán dinámicamente aquí -->
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="genere">Género</label>
+                <select id="genere" name="genere" required>
+                    <option value="">Selecciona un género</option>
+                    <option value="aventura">Aventura</option>
+                    <option value="ciencia-ficcion">Ciencia Ficción</option>
+                    <option value="infantil">Infantil</option>
+                    <option value="comedia">Comedia</option>
+                    <option value="drama">Drama</option>
+                    <option value="terror">Terror</option>
+                    <option value="accion">Acción</option>
+                </select>
+            </div>
+
+            <button type="submit">Subir video</button>
+        </form>
     </div>
 
-    <div class="form-group">
-        <label for="originalTitle">Título Original (opcional)</label>
-        <input type="text" id="originalTitle" name="originalTitle" placeholder="Ingresa el título original">
-    </div>
-
-    <div class="form-group">
-        <label for="videoUrl">URL del video</label>
-        <input type="text" id="videoUrl" name="videoUrl" placeholder="Ingresa la URL del video" required>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group half">
-            <label for="type">Tipo</label>
-            <select id="type" name="type" required>
-                <option value="">Selecciona el tipo</option>
-                <option value="pelicula">Película</option>
-                <option value="serie">Serie</option>
-            </select>
-        </div>
-
-        <div class="form-group half">
-            <label for="genere">Género</label>
-            <select id="genere" name="genere" required>
-                <option value="">Selecciona un género</option>
-                <option value="aventura">Aventura</option>
-                <option value="ciencia-ficción">Ciencia Ficción</option>
-                <option value="infantil">Infantil</option>
-                <option value="comedia">Comedia</option>
-                <option value="drama">Drama</option>
-                <option value="terror">Terror</option>
-                <option value="accion">Accion</option>
-            </select>
-        </div>
-    </div>
-
-    <button type="submit" class="submit-button">Subir video</button>
-</form>
-:::
-
-<style>
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-.upload-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.upload-container h2 {
-    text-align: center;
-    color: #333;
-    margin-bottom: 30px;
-    font-size: 24px;
-}
-
-.upload-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-row {
-    display: flex;
-    gap: 20px;
-}
-
-.form-group.half {
-    flex: 1;
-}
-
-label {
-    font-weight: 500;
-    color: #444;
-}
-
-input, select {
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    transition: border-color 0.3s;
-}
-
-input:focus, select:focus {
-    outline: none;
-    border-color: #4a90e2;
-}
-
-input::placeholder {
-    color: #999;
-}
-
-.submit-button {
-    background-color: #4a90e2;
-    color: white;
-    padding: 14px;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-}
-
-.submit-button:hover {
-    background-color: #357abd;
-}
-
-.submit-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-}
-
-.message {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 6px;
-    color: white;
-    animation: slideIn 0.3s ease;
-}
-
-.message.success {
-    background-color: #4caf50;
-}
-
-.message.error {
-    background-color: #f44336;
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-</style>
-
-    <footer>
-        <p>&copy; 2024 PixelView. Todos los derechos reservados.</p>
-    </footer>
-
-    <!-- Firebase App y Firestore -->
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js"></script>
-    <script type="module" src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js"></script>
-    
-    <!-- Tu script principal -->
     <script type="module" src="scripts-subir.js"></script>
-
-    <script>
-        // Script para manejar el popup de instrucciones
-        document.addEventListener('DOMContentLoaded', () => {
-            const popup = document.getElementById('instructionsPopup');
-            const acceptButton = document.getElementById('acceptButton');
-
-            // Mostrar el popup al cargar la página
-            popup.style.display = 'flex';
-
-            // Cerrar el popup al hacer clic en el botón Aceptar
-            acceptButton.addEventListener('click', () => {
-                popup.style.display = 'none';
-            });
-        });
-    </script>
 </body>
 </html>
